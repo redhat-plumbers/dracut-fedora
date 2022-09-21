@@ -72,6 +72,8 @@ install() {
         "$systemdsystemunitdir"/paths.target \
         "$systemdsystemunitdir"/umount.target \
         "$systemdsystemunitdir"/sys-kernel-config.mount \
+        \
+        "$systemdsystemunitdir"/modprobe@.service \
         "$systemdsystemunitdir"/systemd-halt.service \
         "$systemdsystemunitdir"/systemd-poweroff.service \
         "$systemdsystemunitdir"/systemd-reboot.service \
@@ -95,6 +97,8 @@ install() {
         inst_multiple -H -o \
             "$systemdutilconfdir"/system.conf \
             "$systemdutilconfdir"/system.conf.d/*.conf \
+            "$systemdsystemconfdir"/modprobe@.service \
+            "$systemdsystemconfdir/modprobe@.service.d/*.conf" \
             /etc/hosts \
             /etc/hostname \
             /etc/nsswitch.conf \
