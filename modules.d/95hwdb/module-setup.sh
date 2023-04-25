@@ -2,14 +2,17 @@
 # This file is part of dracut.
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+check() {
+    return 255
+}
+
 # called by dracut
 install() {
-    inst_multiple -o \
-        "${udevdir}"/hwdb.bin
+    # Follow the same priority as `systemd-hwdb`; `/etc` is the default
+    # and `/usr/lib` an alternative location.
+    inst_multiple "${udevconfdir}"/hwdb.bin
 
-    # Install the hosts local user configurations if enabled.
     if [[ $hostonly ]]; then
-        inst_multiple -H -o \
-            "$udevconfdir"/hwdb.bin
+        inst_multiple -H -o "${udevdir}"/hwdb.bin
     fi
 }
