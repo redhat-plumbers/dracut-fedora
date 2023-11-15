@@ -1,0 +1,46 @@
+# Docs: https://packit.dev/docs/
+
+specfile_path: pkgbuild/dracut.spec
+
+files_to_sync:
+  - .packit.yaml
+  - pkgbuild/dracut.spec
+  
+upstream_package_name: dracut
+downstream_package_name: dracut
+
+#actions:
+#  post-upstream-clone:
+    # Use the current specfile
+#    - "cp pkgbuild/dracut.spec ."
+
+- job: upstream_koji_build
+  trigger: pull_request
+  metadata:
+    targets:
+      - fedora-rawhide-x86_64
+      - fedora-eln-x86_64
+
+# Available targets can be listed via `copr-cli list-chroots`
+jobs:
+# Build test
+- job: copr_build
+  trigger: pull_request
+  metadata:
+    targets:
+      - fedora-rawhide-x86_64
+      - fedora-eln-x86_64
+
+# Run tests (via testing farm)
+- job: tests
+  trigger: pull_request
+  metadata:
+    targets:
+      - fedora-rawhide-x86_64
+      - fedora-eln-x86_64
+
+# Create fedora PR
+- job: propose_downstream
+  trigger: commit
+  dist_git_branches:
+    - rawhide
