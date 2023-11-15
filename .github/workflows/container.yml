@@ -43,7 +43,7 @@ jobs:
                     username: ${{ github.repository_owner }}
                     password: ${{ secrets.GITHUB_TOKEN }}
             -   name: Build and Push Container
-                uses: docker/build-push-action@v2
+                uses: docker/build-push-action@v5
                 with:
                     file: test/container/${{ matrix.config.dockerfile }}
                     tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.config.tag }}
