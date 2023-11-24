@@ -28,7 +28,7 @@ jobs:
             fail-fast: false
             matrix:
                 config:
-                    - { dockerfile: 'Dockerfile-CentOS-9-Stream',   tag: 'centos:stream9' }
+                    - { dockerfile: 'Dockerfile-Fedora-latest',     tag: 'fedora:latest' }
         steps:
             -   name: Check out the repo
                 uses: actions/checkout@v4
