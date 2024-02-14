@@ -26,53 +26,6 @@ Source0: https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.g
 
 Source1: https://www.gnu.org/licenses/lgpl-2.1.txt
 
-# Never auto-enable bluetooth module (but it can be manually included
-# for debugging) - workaround for RHBZ #1964879.
-# https://github.com/dracutdevs/dracut/pull/1521
-Patch1: 1521-Never-enable-the-bluetooth-module-by-default.patch
-
-# Skip creating initrd when initrd already provided,
-# or different generator is configured
-# https://github.com/dracutdevs/dracut/pull/1825/
-Patch2: 1825-Skip-creating-initrd-when-initrd-is-provided.patch
-
-# Add kernel module with support for macbook keyboards
-# https://github.com/dracutdevs/dracut/pull/2218
-Patch3: 2218-add-module-driver-support-for-macbook-keyboards.patch
-
-# fix(dmsquash-live): restore compatibility with earlier releases
-# https://github.com/dracutdevs/dracut/pull/2233/
-# https://bugzilla.redhat.com/show_bug.cgi?id=2172269
-Patch4: 2233-dmsquash-live-restore-compatibility.patch
-
-# Fix: dracut --kmoddir fails on paths with traling /
-# https://bugzilla.redhat.com/show_bug.cgi?id=2173100
-Patch5: 2237-kmoddir-fix-trailing-forwardslash-handling.patch
-
-# revert(network-manager): avoid restarting NetworkManager
-# https://github.com/dracutdevs/dracut/pull/2134
-Patch6: 2134-revert-avoid-restarting-NetworkManager.patch
-
-# Support MACAddressPolicy=none for bond/bridge/team devices
-# https://fedoraproject.org/wiki/Changes/MAC_Address_Policy_none
-# https://github.com/dracutdevs/dracut/pull/2224
-Patch7: 2224-network-include-default-mac-none-link.patch
-
-# fix(multipath): remove dependency on multipathd.socket
-# https://github.com/dracutdevs/dracut/pull/2290
-Patch8: 2290-remove-dependency-on-multipathd-socket.patch
-
-# fix(kernel-modules): add interconnect drivers
-# https://github.com/dracutdevs/dracut/pull/2377
-Patch9: 2377-fix-kernel-modules-add-interconnect-drivers.patch
-
-# feat(nvmf): support for NVMeoF
-# https://github.com/dracutdevs/dracut/pull/2184
-Patch10: 2184-add-nvmeof-module.patch
-
-# fix(dracut.sh): use dynamically uefi's sections offset
-# https://github.com/dracutdevs/dracut/pull/2277
-Patch11: 0001-fix-dracut.sh-use-dynamically-uefi-s-sections-offset.patch
 
 BuildRequires: bash
 BuildRequires: git-core
@@ -129,7 +82,7 @@ Summary: dracut modules to build a dracut initramfs with network support
 Requires: %{name} = %{version}-%{release}
 Requires: iputils
 Requires: iproute
-Requires: (NetworkManager >= 1.20 or dhclient)
+Requires: NetworkManager >= 1.20
 Suggests: NetworkManager
 Obsoletes: dracut-generic < 008
 Provides:  dracut-generic = %{version}-%{release}
@@ -217,15 +170,14 @@ cp %{SOURCE1} .
 
 echo "DRACUT_VERSION=%{version}-%{release}" > $RPM_BUILD_ROOT/%{dracutlibdir}/dracut-version.sh
 
-%if 0%{?fedora} == 0 && 0%{?rhel} == 0 && 0%{?suse_version} == 0
-rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/01fips
-%endif
-
 # we do not support dash in the initramfs
 rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/00dash
 
 # we do not support mksh in the initramfs
 rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/00mksh
+
+# Remove obsolete module
+rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/35network-legacy
 
 %ifnarch s390 s390x
 # remove architecture specific modules
@@ -424,7 +376,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/01systemd-networkd
 %{dracutlibdir}/modules.d/35connman
 %{dracutlibdir}/modules.d/35network-manager
-%{dracutlibdir}/modules.d/35network-legacy
 %{dracutlibdir}/modules.d/35network-wicked
 %{dracutlibdir}/modules.d/40network
 %{dracutlibdir}/modules.d/45ifcfg
