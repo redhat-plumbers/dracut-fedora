@@ -1,0 +1,11 @@
+---
+# This first play always runs on the local staging system
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    tests:
+    - add-luks-keys
+    required_packages:
+    - dracut              # Required for add-luks-keys
