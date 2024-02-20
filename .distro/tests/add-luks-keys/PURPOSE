@@ -1,0 +1,3 @@
+PURPOSE of /dracut/add-luks-keys
+Description: Create and add a luks key to all luks devices to allow booting of a system without entering a passphrase. 
+Author: Jan Stodola <jstodola@redhat.com>
