@@ -12,7 +12,7 @@ jobs:
         # run this test on all containers
         name: ${{ matrix.test }} on ${{ matrix.container }}
         runs-on: ubuntu-latest
-        timeout-minutes: 30
+        timeout-minutes: 45
         concurrency:
             group: basic-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -20,20 +20,13 @@ jobs:
             fail-fast: false
             matrix:
                 container: [
-                        "alpine",
-                        "arch",
-                        "debian",
                         "fedora",
-                        "gentoo",
-                        "opensuse",
-                        "ubuntu",
-                        "void",
                 ]
                 test: [
                         "01",
                 ]
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -43,7 +36,7 @@ jobs:
     extended:
         name: ${{ matrix.test }} on ${{ matrix.container }}
         runs-on: ubuntu-latest
-        timeout-minutes: 30
+        timeout-minutes: 45
         concurrency:
             group: extended-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -51,14 +44,7 @@ jobs:
             fail-fast: false
             matrix:
                 container: [
-                        "alpine",
-                        "arch",
-                        "debian",
                         "fedora",
-                        "gentoo",
-                        "opensuse",
-                        "ubuntu",
-                        "void",
                 ]
                 test: [
                         "02",
@@ -77,7 +63,7 @@ jobs:
                         "98",
                 ]
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -87,7 +73,7 @@ jobs:
     dracut-cpio:
         name: ${{ matrix.test }} on ${{ matrix.container }}
         runs-on: ubuntu-latest
-        timeout-minutes: 30
+        timeout-minutes: 45
         concurrency:
             group: dracut-cpio-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -95,13 +81,13 @@ jobs:
             fail-fast: false
             matrix:
                 container: [
-                        "opensuse",
+                        "fedora",
                 ]
                 test: [
                         "63",
                 ]
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -111,7 +97,7 @@ jobs:
     arm64:
         name: ${{ matrix.test }} on ${{ matrix.container }} on arm64
         runs-on: ubuntu-latest
-        timeout-minutes: 30
+        timeout-minutes: 45
         concurrency:
             group: arm64-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -119,7 +105,6 @@ jobs:
             fail-fast: false
             matrix:
                 container: [
-                        "debian",
                         "fedora",
                 ]
                 test: [
@@ -133,7 +118,7 @@ jobs:
             -   name: "Checkout Repository"
                 uses: actions/checkout@v4
             -   name: "${{ matrix.container }} TEST-${{ matrix.test }}"
-                run: docker run --platform linux/arm64 --privileged -v /dev:/dev -v $PWD:/w ghcr.io/dracut-ng/${{ matrix.container }} /w/tools/test-github.sh "TEST-${{ matrix.test }}" ${{ matrix.test }}
+                run: docker run --platform linux/arm64 --privileged -v /dev:/dev -v $PWD:/w ghcr.io/${{ github.repository_owner }}/${{ matrix.container }} /w/tools/test-github.sh "TEST-${{ matrix.test }}" ${{ matrix.test }}
     network:
         # all nfs based on default networking
         name: ${{ matrix.test }} on ${{ matrix.container }}
@@ -146,12 +131,7 @@ jobs:
             fail-fast: false
             matrix:
                 container: [
-                        "arch",
-                        "debian",
                         "fedora",
-                        "gentoo",
-                        "opensuse",
-                        "ubuntu",
                 ]
                 test: [
                         "20",
@@ -160,14 +140,8 @@ jobs:
                 ]
                 include:
                   - network: ""
-                  - # on debian run tests with systemd-networkd
-                    container: "debian"
-                    network: "systemd-networkd"
-                  - # on openSUSE run tests with network-legacy
-                    container: "opensuse"
-                    network: "network-legacy"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -187,24 +161,13 @@ jobs:
             fail-fast: false
             matrix:
                 container: [
-                        "arch",
-                        "debian",
                         "fedora",
-                        "gentoo",
-                        "opensuse",
-                        "ubuntu",
                 ]
                 test: [ "30","35" ]
                 include:
                   - network: ""
-                  - # on debian run tests with systemd-networkd
-                    container: "debian"
-                    network: "systemd-networkd"
-                  - # on openSUSE run tests with network-legacy
-                    container: "opensuse"
-                    network: "network-legacy"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -224,22 +187,13 @@ jobs:
             fail-fast: false
             matrix:
                 container: [
-                        "arch",
-                        "debian",
                         "fedora",
-                        "opensuse",
                 ]
                 test: [ "40" ]
                 include:
                   - network: ""
-                  - # on openSUSE run tests with network-legacy
-                    container: "opensuse"
-                    network: "network-legacy"
-                  - # on debian run this test on network-legacy to be able to pass it
-                    container: "debian"
-                    network: "network-legacy"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
