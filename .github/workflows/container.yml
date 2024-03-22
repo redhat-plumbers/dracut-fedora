@@ -23,7 +23,6 @@ permissions:
 
 jobs:
     container:
-        if: github.repository == 'dracut-ng/dracut-ng' || vars.CONTAINER == 'enabled'
         name: ${{ matrix.config.tag }}-${{ matrix.architecture.tag }}
         concurrency:
             group: >
@@ -37,15 +36,8 @@ jobs:
                     - {platform: 'linux/amd64', runner: 'ubuntu-24.04', tag: 'amd'}
                     - {platform: 'linux/arm64', runner: 'ubuntu-24.04-arm', tag: 'arm'}
                 config:
-                    - {dockerfile: 'Dockerfile-alpine', tag: 'alpine:edge'}
-                    - {dockerfile: 'Dockerfile-alpine', tag: 'alpine:busybox-edge', option: 'busybox'}
-                    - {dockerfile: 'Dockerfile-arch', tag: 'arch:latest'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'debian:latest'}
+                    - {dockerfile: 'Dockerfile-fedora', tag: 'fedora:rawhide'}
                     - {dockerfile: 'Dockerfile-fedora', tag: 'fedora:latest'}
-                    - {dockerfile: 'Dockerfile-opensuse', tag: 'opensuse:latest'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'ubuntu:devel'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'ubuntu:rolling'}
-                    - {dockerfile: 'Dockerfile-void', tag: 'void:latest'}
                 exclude:
                     - config: {tag: 'arch:latest'}
                       architecture: {platform: 'linux/arm64'}
@@ -84,15 +76,8 @@ jobs:
         strategy:
             matrix:
                 config:
-                    - {tag: 'alpine:edge', platforms: ['amd', 'arm']}
-                    - {tag: 'alpine:busybox-edge', platforms: ['amd', 'arm']}
-                    - {tag: 'arch:latest', platforms: ['amd']}
-                    - {tag: 'debian:latest', platforms: ['amd', 'arm']}
+                    - {tag: 'fedora:rawhide', platforms: ['amd', 'arm']}
                     - {tag: 'fedora:latest', platforms: ['amd', 'arm']}
-                    - {tag: 'opensuse:latest', platforms: ['amd', 'arm']}
-                    - {tag: 'ubuntu:devel', platforms: ['amd', 'arm']}
-                    - {tag: 'ubuntu:rolling', platforms: ['amd', 'arm']}
-                    - {tag: 'void:latest', platforms: ['amd', 'arm']}
         steps:
             - name: Login to GitHub Container Registry
               uses: docker/login-action@v4

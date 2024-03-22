@@ -25,7 +25,6 @@ permissions:
 
 jobs:
     container-extra:
-        if: github.repository == 'dracut-ng/dracut-ng' || vars.CONTAINER == 'enabled'
         name: ${{ matrix.config.tag }}-${{ matrix.architecture.tag }}
         runs-on: ${{ matrix.architecture.runner }}
         concurrency:
@@ -40,12 +39,9 @@ jobs:
                     - {platform: 'linux/amd64', runner: 'ubuntu-24.04', tag: 'amd'}
                     - {platform: 'linux/arm64', runner: 'ubuntu-24.04-arm', tag: 'arm'}
                 config:
-                    - {dockerfile: 'Dockerfile-azurelinux', tag: 'azurelinux:3.0', registry: 'mcr.microsoft.com'}
-                    - {dockerfile: 'Dockerfile-fedora', tag: 'centos:latest', registry: 'quay.io/centos'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'debian:sid'}
-                    - {dockerfile: 'Dockerfile-gentoo', tag: 'gentoo:amd64-openrc', option: 'amd64-openrc'}
-                    - {dockerfile: 'Dockerfile-gentoo', tag: 'gentoo:arm64-openrc', option: 'arm64-openrc'}
-                    - {dockerfile: 'Dockerfile-gentoo', tag: 'gentoo:latest', option: 'systemd'}
+                    - {dockerfile: 'Dockerfile-fedora', tag: 'fedora:latest', registry: 'quay.io/fedora'}
+                    - {dockerfile: 'Dockerfile-fedora', tag: 'fedora:rawhide', registry: 'registry.fedoraproject.org'}
+                    - {dockerfile: 'Dockerfile-fedora', tag: 'centos:stream10-development', registry: 'quay.io/centos'}
                 exclude:
                     - config: {tag: 'arch:latest'}
                       architecture: {platform: 'linux/arm64'}
@@ -88,12 +84,9 @@ jobs:
         strategy:
             matrix:
                 config:
-                    - {tag: 'azurelinux:3.0', platforms: ['amd', 'arm']}
-                    - {tag: 'centos:latest', platforms: ['amd', 'arm']}
-                    - {tag: 'debian:sid', platforms: ['amd', 'arm']}
-                    - {tag: 'gentoo:latest', platforms: ['amd', 'arm']}
-                    - {tag: 'gentoo:amd64-openrc', platforms: ['amd']}
-                    - {tag: 'gentoo:arm64-openrc', platforms: ['arm']}
+                    - {tag: 'fedora:rawhide', platforms: ['amd', 'arm']}
+                    - {tag: 'fedora:latest', platforms: ['amd', 'arm']}
+                    - {tag: 'centos:stream10-development', platforms: ['amd', 'arm']}
         steps:
             - name: Login to GitHub Container Registry
               uses: docker/login-action@v4
