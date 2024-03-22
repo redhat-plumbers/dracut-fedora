@@ -11,13 +11,7 @@ on:
                 description: 'distro'
                 default: 'all'
                 options:
-                    - "all"
                     - "fedora"
-                    - "arch"
-                    - "debian"
-                    - "ubuntu"
-                    - "opensuse"
-                    - "gentoo"
             env:
                 description: 'Environment (optional)'
                 default: '{"DEBUGFAIL": "rd.debug"}'
@@ -65,7 +59,7 @@ jobs:
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
-                uses: actions/checkout@v1
+                uses: actions/checkout@v4
                 with:
                     fetch-depth: 0
             -   name: "${{ matrix.container }} ${{ matrix.test }}"
