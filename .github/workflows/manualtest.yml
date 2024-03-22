@@ -10,23 +10,10 @@ on:  # yamllint disable-line rule:truthy
             container:
                 type: choice
                 description: 'distro'
-                default: 'all'
+                default: 'fedora'
                 options:
-                    - "all"
-                    - "alpine"
-                    - "alpine:edge"
-                    - "centos:stream10-development"
                     - "fedora"
                     - "fedora:rawhide"
-                    - "arch"
-                    - "debian"
-                    - "debian:sid"
-                    - "ubuntu"
-                    - "ubuntu:devel"
-                    - "ubuntu:rolling"
-                    - "opensuse"
-                    - "gentoo"
-                    - "void"
             env:
                 description: 'Environment (optional)'
                 default: '{"DEBUGFAIL": "rd.debug"}'
