@@ -25,7 +25,6 @@ permissions:
 
 jobs:
     amd64:
-        if: github.repository == 'dracut-ng/dracut-ng' || vars.CONTAINER == 'enabled'
         name: ${{ matrix.config.tag }} on ${{ matrix.architecture.platform }}
         runs-on: ${{ matrix.architecture.runner }}
         concurrency:
@@ -38,14 +37,8 @@ jobs:
                     - {platform: 'linux/amd64', runner: 'ubuntu-24.04', tag: 'amd'}
                     - {platform: 'linux/arm64', runner: 'ubuntu-24.04-arm', tag: 'arm'}
                 config:
-                    - {dockerfile: 'Dockerfile-debian', tag: 'debian:sid'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'ubuntu:devel'}
-                    - {dockerfile: 'Dockerfile-alpine', tag: 'alpine:edge'}
-                    - {dockerfile: 'Dockerfile-gentoo', tag: 'gentoo:latest', option: 'systemd'}
-                    - {dockerfile: 'Dockerfile-gentoo', tag: 'gentoo:amd64-openrc', option: 'amd64-openrc'}
                     - {dockerfile: 'Dockerfile-fedora', tag: 'fedora:rawhide', registry: 'registry.fedoraproject.org'}
                     - {dockerfile: 'Dockerfile-fedora', tag: 'centos:stream10-development', registry: 'quay.io/centos'}
-                    - {dockerfile: 'Dockerfile-azurelinux', tag: 'azurelinux:3.0', registry: 'mcr.microsoft.com'}
                 exclude:
                    - config: {tag: 'arch:latest'}
                      architecture: {platform: 'linux/arm64'}

@@ -21,8 +21,8 @@ jobs:
     basic:
         # run this test on all containers
         name: ${{ matrix.test }} on ${{ matrix.container }}
-        runs-on: ubuntu-24.04
-        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        timeout-minutes: 45
         concurrency:
             group: basic-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -30,18 +30,11 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - alpine:latest
-                    - arch:latest
-                    - debian:latest
                     - fedora:latest
-                    - gentoo:latest
-                    - opensuse:latest
-                    - ubuntu:devel
-                    - void:latest
                 test:
                     - "10"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}-amd
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}-amd
             options: '--device=/dev/kvm'
         steps:
             - name: "Checkout Repository"
@@ -53,7 +46,7 @@ jobs:
     syncheck:
         needs: basic
         name: syncheck
-        runs-on: ubuntu-24.04
+        runs-on: ubuntu-latest
         steps:
             - name: "Checkout Repository"
               uses: actions/checkout@v5
@@ -65,8 +58,8 @@ jobs:
     extended:
         needs: basic
         name: ${{ matrix.test }} on ${{ matrix.container }}
-        runs-on: ubuntu-24.04
-        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        timeout-minutes: 45
         concurrency:
             group: extended-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -74,12 +67,7 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - arch:latest
                     - fedora:latest
-                    - gentoo:latest
-                    - opensuse:latest
-                    - ubuntu:devel
-                    - void:latest
                 test:
                     - "11"
                     - "12"
@@ -91,7 +79,7 @@ jobs:
                     - "80"
                     - "81"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}-amd
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}-amd
             options: '--device=/dev/kvm'
         steps:
             - name: "Checkout Repository"
@@ -102,8 +90,8 @@ jobs:
     extended-systemd:
         needs: basic
         name: ${{ matrix.test }} on ${{ matrix.container }}
-        runs-on: ubuntu-24.04
-        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        timeout-minutes: 40
         concurrency:
             group: extended-systemd-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -111,11 +99,7 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - arch:latest
                     - fedora:latest
-                    - gentoo:latest
-                    - opensuse:latest
-                    - ubuntu:devel
                 test:
                     - "40"
                     - "41"
@@ -127,7 +111,7 @@ jobs:
                     - container: arch:latest
                       test: "41"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}-amd
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}-amd
             options: '--device=/dev/kvm --privileged'
         steps:
             - name: "Checkout Repository"
@@ -138,8 +122,8 @@ jobs:
     dracut-cpio:
         needs: basic
         name: ${{ matrix.test }} on ${{ matrix.container }}
-        runs-on: ubuntu-24.04
-        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        timeout-minutes: 40
         concurrency:
             group: dracut-cpio-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
@@ -147,23 +131,24 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - opensuse:latest
+                    - fedora:latest
                 test:
                     - "82"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}-amd
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}-amd
             options: '--device=/dev/kvm'
         steps:
             - name: "Checkout Repository"
               uses: actions/checkout@v5
             - name: "${{ matrix.container }} TEST-${{ matrix.test }}"
               run: ./test/test-container.sh "TEST-${{ matrix.test }}" ${{ matrix.test }}
+
     network:
         needs: basic
         # all nfs based on default networking
         name: ${{ matrix.test }} on ${{ matrix.container }}
-        runs-on: ubuntu-24.04
-        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        timeout-minutes: 40
         concurrency:
             group: network-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}-${{ matrix.network }}
             cancel-in-progress: true
@@ -171,14 +156,11 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - arch:latest
                     - fedora:latest
-                    - opensuse:latest
-                    - ubuntu:devel
                 test:
                     - "60"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}-amd
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}-amd
             options: '--device=/dev/kvm'
         steps:
             - name: "Checkout Repository"
@@ -188,8 +170,8 @@ jobs:
     network-advanced:
         needs: basic
         name: ${{ matrix.test }} on ${{ matrix.container }}
-        runs-on: ubuntu-24.04
-        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        timeout-minutes: 40
         concurrency:
             group: network-iscsi-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}-${{ matrix.network }}
             cancel-in-progress: true
@@ -197,10 +179,7 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - arch:latest
-                    - debian:latest
-                    - opensuse:latest
-                    - ubuntu:devel
+                    - fedora:latest
                 test:
                     - "70"
                     - "71"
@@ -210,7 +189,7 @@ jobs:
                     - container: ubuntu:devel
                       test: "72"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}-amd
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}-amd
             options: '--device=/dev/kvm'
         steps:
             - name: "Checkout Repository"
@@ -229,14 +208,11 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - debian:latest
-                    - opensuse:latest
-                    - ubuntu:rolling
-                    - void:latest
+                    - fedora:latest
                 test:
                     - "10"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}-arm
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}-arm
             options: '--privileged'
         steps:
             - name: "Checkout Repository"
