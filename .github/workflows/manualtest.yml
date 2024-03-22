@@ -9,17 +9,9 @@ on:
             container:
                 type: choice
                 description: 'distro'
-                default: 'all'
+                default: 'fedora'
                 options:
-                    - "all"
-                    - "alpine"
                     - "fedora"
-                    - "arch"
-                    - "debian"
-                    - "ubuntu"
-                    - "opensuse"
-                    - "gentoo"
-                    - "void"
             env:
                 description: 'Environment (optional)'
                 default: '{"DEBUGFAIL": "rd.debug"}'

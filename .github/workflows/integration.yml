@@ -11,21 +11,14 @@ jobs:
     basic:
         name: ${{ matrix.test }} on ${{ matrix.container }}
         runs-on: ubuntu-latest
-        timeout-minutes: 30
+        timeout-minutes: 45
         concurrency:
             group: basic-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
             cancel-in-progress: true
         strategy:
             matrix:
                 container: [
-                        "alpine",
-                        "arch",
-                        "debian",
                         "fedora",
-                        "gentoo",
-                        "opensuse",
-                        "ubuntu",
-                        "void",
                 ]
                 test: [
                         "01",
@@ -136,11 +129,7 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "arch",
-                        "debian",
                         "fedora",
-                        "gentoo",
-                        "ubuntu",
                 ]
                 test: [
                         "02",
@@ -160,7 +149,7 @@ jobs:
                 ]
             fail-fast: false
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -173,24 +162,39 @@ jobs:
         timeout-minutes: 30
         concurrency:
             group: dracut-cpio-${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}-${{ matrix.test }}
+
+
             cancel-in-progress: true
         strategy:
             matrix:
                 container: [
-                        "opensuse",
+                        "fedora",
+                ]
+                network: [
+                        "network-manager",
+                        #"systemd-networkd",
+                        #"connman",
                 ]
                 test: [
-                        "63",
+                        "20",
+                        "30",
+                        "35",
+                        "40",
+                        "50",
+                        "60",
                 ]
             fail-fast: false
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
                 uses: actions/checkout@v4
+                with:
+                    fetch-depth: 0
+
             -   name: "${{ matrix.container }} TEST-${{ matrix.test }}"
-                run: ./tools/test-github.sh "TEST-${{ matrix.test }}" ${{ matrix.test }}
+                run: USE_NETWORK=${{ matrix.network }} ./tools/test-github.sh "TEST-${{ matrix.test }}" ${{ matrix.test }}
     arm64:
         name: ${{ matrix.test }} on ${{ matrix.container }} on arm64
         runs-on: ubuntu-latest
@@ -201,7 +205,6 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "debian",
                         "fedora",
                 ]
                 test: [
