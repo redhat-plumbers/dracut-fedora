@@ -23,7 +23,6 @@ permissions:
 
 jobs:
     amd64:
-        if: github.repository == 'dracut-ng/dracut-ng' || vars.CONTAINER == 'enabled'
         name: ${{ matrix.config.tag }} on ${{ matrix.architecture.platform }}
         concurrency:
             group: amd64-${{ github.workflow }}-${{ github.ref }}-${{ matrix.config.tag }}-${{ matrix.architecture.platform }}
@@ -35,13 +34,7 @@ jobs:
                     - {platform: 'linux/amd64', runner: 'ubuntu-24.04', tag: 'amd'}
                     - {platform: 'linux/arm64', runner: 'ubuntu-24.04-arm', tag: 'arm'}
                 config:
-                    - {dockerfile: 'Dockerfile-debian', tag: 'debian:latest'}
                     - {dockerfile: 'Dockerfile-fedora', tag: 'fedora:latest'}
-                    - {dockerfile: 'Dockerfile-opensuse', tag: 'opensuse:latest'}
-                    - {dockerfile: 'Dockerfile-arch', tag: 'arch:latest'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'ubuntu:latest'}
-                    - {dockerfile: 'Dockerfile-alpine', tag: 'alpine:latest'}
-                    - {dockerfile: 'Dockerfile-void', tag: 'void:latest'}
                 exclude:
                    - config: {tag: 'alpine:latest'}
                      architecture: {platform: 'linux/arm64'}
