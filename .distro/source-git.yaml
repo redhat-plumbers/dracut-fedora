@@ -5,6 +5,7 @@ specfile_path: .distro/dracut.spec
 patch_generation_ignore_paths:
 - .distro/
 - .packit.yml
+- .github/
 patch_generation_patch_id_digits: 1
 sync_changelog: true
 files_to_sync:

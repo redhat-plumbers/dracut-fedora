@@ -3,7 +3,7 @@ name: Container
 
 on:  # yamllint disable-line rule:truthy
     schedule:
-        - cron: '30 11 * * *'   # every day at 11:30 UTC
+        - cron: '15 14 * * *'   # every day at 11:30 UTC
     push:
         branches: [main]
         paths:
@@ -23,7 +23,6 @@ permissions:
 
 jobs:
     container:
-        if: github.repository == 'dracut-ng/dracut-ng' || vars.CONTAINER == 'enabled'
         name: ${{ matrix.config.tag }}-${{ matrix.architecture.tag }}
         concurrency:
             group: >
@@ -37,15 +36,7 @@ jobs:
                     - {platform: 'linux/amd64', runner: 'ubuntu-24.04', tag: 'amd'}
                     - {platform: 'linux/arm64', runner: 'ubuntu-24.04-arm', tag: 'arm'}
                 config:
-                    - {dockerfile: 'Dockerfile-alpine', tag: 'alpine:edge'}
-                    - {dockerfile: 'Dockerfile-alpine', tag: 'alpine:busybox-edge', option: 'busybox'}
-                    - {dockerfile: 'Dockerfile-arch', tag: 'arch:latest'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'debian:latest'}
                     - {dockerfile: 'Dockerfile-fedora', tag: 'fedora:latest'}
-                    - {dockerfile: 'Dockerfile-opensuse', tag: 'opensuse:latest'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'ubuntu:devel'}
-                    - {dockerfile: 'Dockerfile-debian', tag: 'ubuntu:rolling'}
-                    - {dockerfile: 'Dockerfile-void', tag: 'void:latest'}
                 exclude:
                     - config: {tag: 'arch:latest'}
                       architecture: {platform: 'linux/arm64'}

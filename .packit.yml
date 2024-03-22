@@ -8,6 +8,7 @@ files_to_sync:
 patch_generation_ignore_paths:
 - .distro/
 - .packit.yml
+- .github/
 patch_generation_patch_id_digits: 1
 sync_changelog: true
 
