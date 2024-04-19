@@ -17,14 +17,9 @@ Summary: Initramfs generator using udev
 # except util/* which is GPLv2
 License: GPL-2.0-or-later AND LGPL-2.1-or-later AND GPL-2.0-only
 
-URL: https://github.com/dracutdevs/dracut/wiki/
+URL: https://github.com/dracut-ng/dracut-ng/wiki/
 
-# Currently upstream does not create releases, therefore
-# source is created from commit 856e7acdb1462803c2517c8d64afb2e34c73c735
-# Reference PR: https://github.com/dracutdevs/dracut/pull/2509
-# Unpacked archive: https://github.com/pvalena/dracut-fedora/tree/v60-srpm-unpacked
-Source0: dracut-%{version}.tar.xz
-#Source0: https://github.com/dracutdevs/dracut/archive/refs/tags/%%{version}.tar.gz
+Source0: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/%{version}.tar.gz
 
 Source1: https://www.gnu.org/licenses/lgpl-2.1.txt
 
@@ -156,7 +151,7 @@ in a squashfs image, result in a smaller initramfs size and reduce runtime memor
 usage.
 
 %prep
-%autosetup -n %{name}-%{version} -S git_am
+%autosetup -n %{name}-ng-%{version} -S git_am
 cp %{SOURCE1} .
 
 %build
