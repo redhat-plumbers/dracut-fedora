@@ -7,7 +7,7 @@
 %global __requires_exclude pkg-config
 
 Name: dracut
-Version: 060
+Version: 101
 Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
@@ -288,6 +288,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/09dbus
 %{dracutlibdir}/modules.d/10i18n
 %{dracutlibdir}/modules.d/30convertfs
+%{dracutlibdir}/modules.d/45net-lib
 %{dracutlibdir}/modules.d/45url-lib
 %{dracutlibdir}/modules.d/50drm
 %{dracutlibdir}/modules.d/50plymouth
@@ -426,6 +427,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Thu May 16 2024 Pavel Valena <pvalena@redhat.com> - 101-1
+- Update to dracut 101.
+
 * Fri Apr 26 2024 Adam Williamson <awilliam@redhat.com> - 060-2
 - Backport fix to pull in required libs for systemd (dracut-ng PR #118)
 - Backport fix to move hook directory for systemd (dracut-ng PR #194)
