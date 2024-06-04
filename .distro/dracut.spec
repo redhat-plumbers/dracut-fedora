@@ -7,7 +7,7 @@
 %global __requires_exclude pkg-config
 
 Name: dracut
-Version: 101
+Version: 102
 Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
@@ -253,6 +253,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/01fips
 %{dracutlibdir}/modules.d/01systemd-ac-power
 %{dracutlibdir}/modules.d/01systemd-ask-password
+%{dracutlibdir}/modules.d/01systemd-bsod
 %{dracutlibdir}/modules.d/01systemd-coredump
 %{dracutlibdir}/modules.d/01systemd-creds
 %{dracutlibdir}/modules.d/01systemd-hostnamed
@@ -305,9 +306,12 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/90mdraid
 %{dracutlibdir}/modules.d/90multipath
 %{dracutlibdir}/modules.d/90nvdimm
+%{dracutlibdir}/modules.d/90numlock
 %{dracutlibdir}/modules.d/90overlayfs
 %{dracutlibdir}/modules.d/90ppcmac
+%{dracutlibdir}/modules.d/90pcmcia
 %{dracutlibdir}/modules.d/90qemu
+%{dracutlibdir}/modules.d/90systemd-cryptsetup
 %{dracutlibdir}/modules.d/91crypt-gpg
 %{dracutlibdir}/modules.d/91crypt-loop
 %{dracutlibdir}/modules.d/91fido2
@@ -422,6 +426,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Tue Jun 04 2024 Pavel Valena <pvalena@redhat.com> - 102-1
+- Update to dracut 102.
+
 * Thu May 16 2024 Pavel Valena <pvalena@redhat.com> - 101-1
 - Update to dracut 101.
 
