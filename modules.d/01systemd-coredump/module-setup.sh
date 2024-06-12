@@ -33,6 +33,7 @@ install() {
     inst_multiple -o \
         "$sysctld"/50-coredump.conf \
         "$systemdutildir"/coredump.conf \
+        "$systemdutildir/coredump.conf.d/*.conf" \
         "$systemdutildir"/systemd-coredump \
         "$systemdsystemunitdir"/systemd-coredump.socket \
         "$systemdsystemunitdir"/systemd-coredump@.service \
@@ -51,7 +52,7 @@ install() {
     if [[ $hostonly ]]; then
         inst_multiple -H -o \
             "$systemdutilconfdir"/coredump.conf \
-            "$systemdsystemconfdir/coredump.conf.d/*.conf" \
+            "$systemdutilconfdir/coredump.conf.d/*.conf" \
             "$systemdsystemconfdir"/systemd-coredump.socket \
             "$systemdsystemconfdir/systemd-coredump.socket.d/*.conf" \
             "$systemdsystemconfdir"/systemd-coredump@.service \
