@@ -18,17 +18,17 @@ permissions:
     contents: read
 
 jobs:
-    arm64:
+    push_to_registry:
         name: ${{ matrix.config.tag }} on ${{ matrix.config.platform }}
         runs-on: ubuntu-latest
         concurrency:
-            group: arm64-${{ github.workflow }}-${{ github.ref }}-${{ matrix.config.dockerfile }}
+            group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.config.dockerfile }}
             cancel-in-progress: true
         strategy:
             fail-fast: false
             matrix:
                 config:
-                    - { dockerfile: 'Dockerfile-Fedora-latest',     tag: 'fedora',     platform: 'linux/arm64,linux/amd64' }
+                    - { dockerfile: 'Dockerfile-CentOS-10-Stream',   tag: 'centos:stream10' }
         steps:
             -   name: Set up QEMU
                 uses: docker/setup-qemu-action@v3
@@ -50,6 +50,6 @@ jobs:
                 uses: docker/build-push-action@v5
                 with:
                     file: test/container/${{ matrix.config.dockerfile }}
-                    tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.config.tag }}:latest
+                    tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.config.tag }}
                     push: ${{ github.event_name == 'push' ||  github.event_name == 'schedule' }}
                     platforms: ${{ matrix.config.platform }}

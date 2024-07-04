@@ -9,9 +9,9 @@ on:
             container:
                 type: choice
                 description: 'distro'
-                default: 'fedora'
+                default: 'centos:stream10'
                 options:
-                    - "fedora"
+                    - "centos:stream10"
             env:
                 description: 'Environment (optional)'
                 default: '{"DEBUGFAIL": "rd.debug"}'

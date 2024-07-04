@@ -23,29 +23,28 @@ downstream_package_name: dracut
 #    - "cp pkgbuild/dracut.spec ."
 
 jobs:
-# Build test
-- job: upstream_koji_build
-  trigger: pull_request
-  scratch: true
-  targets:
-    - fedora-rawhide-x86_64
-    - fedora-eln-x86_64
+#- job: upstream_koji_build
+#  trigger: pull_request
+#  scratch: true
+#  targets:
+#    - fedora-rawhide-x86_64
+#    - fedora-eln-x86_64
 
 - job: copr_build
   trigger: pull_request
   targets:
-    - fedora-rawhide-x86_64
-    - fedora-eln-x86_64
+    - centos-stream-10-x86_64
+    - centos-stream-10-aarch64
 
 # Run tests (via testing farm)
 - job: tests
   trigger: pull_request
   targets:
-    - fedora-rawhide-x86_64
-#    - fedora-eln-x86_64
+    - centos-stream-10-x86_64
+    - centos-stream-10-aarch64
 
-## Create fedora PR
+## Create PR
 #- job: propose_downstream
 #  trigger: release
 #  dist_git_branches:
-#    - rawhide
+#    -

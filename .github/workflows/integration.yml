@@ -18,14 +18,14 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "fedora",
+                        "centos:stream10",
                 ]
                 test: [
                         "01",
                 ]
             fail-fast: false
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/redhat-plumbers/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -42,7 +42,7 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "fedora",
+                        "centos:stream10",
                 ]
                 network: [
                         "network",
@@ -55,7 +55,7 @@ jobs:
                 ]
             fail-fast: false
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/redhat-plumbers/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -72,7 +72,7 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "opensuse",
+                        "centos:stream10",
                 ]
                 network: [
                         "network-legacy",
@@ -84,7 +84,7 @@ jobs:
                 ]
             fail-fast: false
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/redhat-plumbers/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -112,7 +112,7 @@ jobs:
                 ]
             fail-fast: false
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}
+            image: ghcr.io/redhat-plumbers/${{ matrix.container }}
             options: "--privileged -v /dev:/dev"
         steps:
             -   name: "Checkout Repository"
@@ -129,7 +129,7 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "fedora",
+                        "centos:stream10",
                 ]
                 test: [
                         "02",
@@ -168,7 +168,7 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "fedora",
+                        "centos:stream10",
                 ]
                 network: [
                         "network-manager",
@@ -205,7 +205,7 @@ jobs:
         strategy:
             matrix:
                 container: [
-                        "fedora",
+                        "centos:stream10",
                 ]
                 test: [
                         "98",
@@ -219,4 +219,4 @@ jobs:
             -   name: "Checkout Repository"
                 uses: actions/checkout@v4
             -   name: "${{ matrix.container }} TEST-${{ matrix.test }}"
-                run: docker run --platform linux/arm64 --privileged -v /dev:/dev -v $PWD:/w ghcr.io/dracut-ng/${{ matrix.container }} /w/tools/test-github.sh "TEST-${{ matrix.test }}" ${{ matrix.test }}
+                run: docker run --platform linux/arm64 --privileged -v /dev:/dev -v $PWD:/w ghcr.io/redhat-plumbers/${{ matrix.container }} /w/tools/test-github.sh "TEST-${{ matrix.test }}" ${{ matrix.test }}
