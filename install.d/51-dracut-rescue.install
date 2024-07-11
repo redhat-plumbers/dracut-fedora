@@ -13,9 +13,9 @@ if [ "${KERNEL_INSTALL_INITRD_GENERATOR:-dracut}" != "dracut" ]; then
     exit 0
 fi
 
-dropindirs_sort()
-{
-    suffix=$1; shift
+dropindirs_sort() {
+    suffix=$1
+    shift
     args=("$@")
     files=$(
         while (($# > 0)); do
