@@ -20,7 +20,7 @@ DRACUT=${DRACUT-${basedir}/dracut.sh}
 PKGLIBDIR=${PKGLIBDIR-$basedir}
 
 test_dracut() {
-    TEST_DRACUT_ARGS+=" --local --no-hostonly --no-hostonly-cmdline --no-early-microcode --add test --force --kver $KVERSION"
+    TEST_DRACUT_ARGS+=" --local --no-early-microcode --add test --force --kver $KVERSION"
 
     # include $TESTDIR"/overlay if exists
     if [ -d "$TESTDIR"/overlay ]; then
