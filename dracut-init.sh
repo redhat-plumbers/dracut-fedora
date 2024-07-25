@@ -915,6 +915,9 @@ check_mount() {
         fi
     fi
 
+    [[ " $mods_to_load " == *\ $_mod\ * ]] \
+        || mods_to_load+=" $_mod "
+
     for _moddep in $(module_depends "$_mod" "$_moddir"); do
         # handle deps as if they were manually added
         [[ " $dracutmodules " == *\ $_mod\ * ]] \
@@ -932,9 +935,6 @@ check_mount() {
             return 1
         fi
     done
-
-    [[ " $mods_to_load " == *\ $_mod\ * ]] \
-        || mods_to_load+=" $_mod "
 
     return 0
 }
@@ -990,6 +990,9 @@ check_module() {
         fi
     fi
 
+    [[ " $mods_to_load " == *\ $_mod\ * ]] \
+        || mods_to_load+=" $_mod "
+
     for _moddep in $(module_depends "$_mod" "$_moddir"); do
         # handle deps as if they were manually added
         [[ " $dracutmodules " == *\ $_mod\ * ]] \
@@ -1007,9 +1010,6 @@ check_module() {
             return 1
         fi
     done
-
-    [[ " $mods_to_load " == *\ $_mod\ * ]] \
-        || mods_to_load+=" $_mod "
 
     return 0
 }
