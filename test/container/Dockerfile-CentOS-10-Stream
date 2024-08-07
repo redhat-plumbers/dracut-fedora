@@ -9,8 +9,8 @@ RUN echo 'export DRACUT_NO_XATTR=1 KVERSION=$(cd /lib/modules; ls -1 | tail -1)'
 
 # Install needed packages for the dracut CI container
 # FIXME: properly re-add dash once C10S EPEL is available
-#    http://mirrors.kernel.org/fedora/releases/34/Everything/x86_64/os/Packages/d/dash-0.5.10.2-8.fc34.x86_64.rpm \
 RUN dnf -y install --skip-broken --enablerepo crb --setopt=install_weak_deps=False \
+    https://kojipkgs.fedoraproject.org//packages/dash/0.5.12/4.eln141/x86_64/dash-0.5.12-4.eln141.x86_64.rpm \
     qemu-kvm \
     NetworkManager \
     asciidoc \
