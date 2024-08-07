@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # called by dracut
+# shellcheck disable=SC2317
 check() {
+
+    # Always include resume module
+    return 0
+
     swap_on_netdevice() {
         local _dev
         for _dev in "${swap_devs[@]}"; do
