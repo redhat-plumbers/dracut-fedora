@@ -25,7 +25,7 @@ Source1: https://www.gnu.org/licenses/lgpl-2.1.txt
 
 # Please use source-git to work with this spec file:
 # HowTo: https://packit.dev/source-git/work-with-source-git
-# Source-git repository: https://github.com/redhat-plumbers/dracut-fedora/
+# Source-git repository: https://github.com/redhat-plumbers/dracut-rhel10/
 
 BuildRequires: bash
 BuildRequires: git-core
@@ -431,19 +431,15 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %changelog
 * Tue Jun 04 2024 Pavel Valena <pvalena@redhat.com> - 102-1
 - Update to dracut 102.
+  Resolves: RHEL-43460,RHEL-32237,RHEL-32506,RHEL-43460,RHEL-47145,RHEL-49744,RHEL-53350
+
+* Mon Jun 24 2024 Troy Dawson <tdawson@redhat.com> - 101-2
+- Bump release for June 2024 mass rebuild
 
 * Thu May 16 2024 Pavel Valena <pvalena@redhat.com> - 101-1
 - Update to dracut 101.
-
-* Fri Apr 26 2024 Adam Williamson <awilliam@redhat.com> - 060-2
-- Backport fix to pull in required libs for systemd (dracut-ng PR #118)
-- Backport fix to move hook directory for systemd (dracut-ng PR #194)
-
-* Wed Mar 20 2024 Pavel Valena <pvalena@redhat.com> - 060-1
-- Update to dracut 060.
-
-* Mon Feb 12 2024 Pavel Valena <pvalena@redhat.com> - 059-22
 - Remove network-legacy module.
+- Additional fixes on top of rebase (see patches).
 
 * Sat Jan 27 2024 Manuel Fombuena <fombuena@outlook.com> - 059-21
 - fix(pkcs11): delete trailing dot on libcryptsetup-token-systemd-pkcs11.so
