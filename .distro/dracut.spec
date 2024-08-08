@@ -418,6 +418,8 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 
 %files squash
 %{dracutlibdir}/modules.d/99squash
+%{dracutlibdir}/modules.d/95squash-erofs
+%{dracutlibdir}/modules.d/95squash-squashfs
 
 %files config-generic
 %{dracutlibdir}/dracut.conf.d/02-generic-image.conf
