@@ -11,6 +11,7 @@ RUN echo 'export DRACUT_NO_XATTR=1 KVERSION=$(cd /lib/modules; ls -1 | tail -1)'
 # FIXME: properly re-add dash once C10S EPEL is available
 RUN dnf -y install --skip-broken --enablerepo crb --setopt=install_weak_deps=False \
     https://kojipkgs.fedoraproject.org//packages/dash/0.5.12/4.eln141/x86_64/dash-0.5.12-4.eln141.x86_64.rpm \
+    https://kojipkgs.fedoraproject.org//packages/btrfs-progs/6.9.2/1.eln141/x86_64/btrfs-progs-6.9.2-1.eln141.x86_64.rpm \
     qemu-kvm \
     NetworkManager \
     asciidoc \
