@@ -4,9 +4,6 @@
 # shellcheck disable=SC2317
 check() {
 
-    # Always include resume module
-    return 0
-
     swap_on_netdevice() {
         local _dev
         for _dev in "${swap_devs[@]}"; do
@@ -23,6 +20,9 @@ check() {
             # hibernation support requested on kernel command line
             return 0
         else
+            # always include resume module when not on netdevice
+            return 0
+
             # resume= not set on kernel command line
             if [[ -f /sys/power/resume ]]; then
                 if [[ "$(< /sys/power/resume)" == "0:0" ]]; then
