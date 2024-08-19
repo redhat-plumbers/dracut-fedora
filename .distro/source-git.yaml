@@ -16,8 +16,13 @@ files_to_sync:
   filters:
   - protect .git*
   - protect sources
+  - protect .fmf*
+  - protect gating.yaml
+  - protect plans.fmf
+  - protect ci.fmf
   - exclude source-git.yaml
   - exclude .gitignore
+
 sources:
 - path: dracut-ng-102.tar.gz
   url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/102.tar.gz
