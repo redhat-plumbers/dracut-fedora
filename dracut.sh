@@ -2278,7 +2278,7 @@ fi
 
 if dracut_module_included "squash-lib"; then
     dinfo "*** Squashing the files inside the initramfs ***"
-    DRACUT_SQUASH_POST_INST=1 module_install "squash-lib"
+    DRACUT_SQUASH_POST_INST=1 module_install "squash-lib" || exit 1
     rm -rf "$squashdir"
     dinfo "*** Squashing the files inside the initramfs done ***"
 
