@@ -11,6 +11,7 @@ check() {
 
 # called by dracut
 depends() {
+    echo fips
     return 0
 }
 
