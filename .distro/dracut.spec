@@ -256,6 +256,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/00warpclock
 %endif
 %{dracutlibdir}/modules.d/01fips
+%{dracutlibdir}/modules.d/01fips-crypto-policies
 %{dracutlibdir}/modules.d/01systemd-ac-power
 %{dracutlibdir}/modules.d/01systemd-ask-password
 %{dracutlibdir}/modules.d/01systemd-bsod
