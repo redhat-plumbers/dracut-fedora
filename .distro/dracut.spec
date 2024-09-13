@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 103
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -251,6 +251,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/00warpclock
 %endif
 %{dracutlibdir}/modules.d/01fips
+%{dracutlibdir}/modules.d/01fips-crypto-policies
 %{dracutlibdir}/modules.d/01systemd-ac-power
 %{dracutlibdir}/modules.d/01systemd-ask-password
 %{dracutlibdir}/modules.d/01systemd-bsod
@@ -426,6 +427,10 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Thu Sep 19 2024 Clemens Lang <cllang@redhat.com> - 103-2
+- feat(fips-crypto-policies): make c-p follow FIPS mode automatically
+- fix(fips-crypto-policies): make it depend on fips dracut module
+
 * Mon Sep 16 2024 Pavel Valena <pvalena@redhat.com> - 103-1
 - Update to dracut 103.
 
