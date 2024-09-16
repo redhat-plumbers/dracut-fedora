@@ -1,5 +1,5 @@
 upstream_project_url: git@github.com:dracut-ng/dracut-ng.git
-upstream_ref: 1a8ee6e00bbe017717a5ef9e9bcfefb3b88f629e
+upstream_ref: "103"
 downstream_package_name: dracut
 specfile_path: .distro/dracut.spec
 patch_generation_ignore_paths:
@@ -19,4 +19,4 @@ files_to_sync:
   - exclude .gitignore
 sources:
 - path: dracut-ng-102.tar.gz
-  url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/102.tar.gz
+  url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/103.tar.gz
