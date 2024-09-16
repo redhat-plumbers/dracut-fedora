@@ -12,7 +12,7 @@ patch_generation_ignore_paths:
 patch_generation_patch_id_digits: 1
 sync_changelog: true
 
-upstream_ref: 1a8ee6e00bbe017717a5ef9e9bcfefb3b88f629e
+upstream_ref: "103"
 
 upstream_package_name: dracut
 downstream_package_name: dracut

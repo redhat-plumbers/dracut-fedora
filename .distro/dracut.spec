@@ -7,7 +7,7 @@
 %global __requires_exclude pkg-config
 
 Name: dracut
-Version: 102
+Version: 103
 Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
@@ -426,7 +426,16 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
-* Tue Jun 04 2024 Pavel Valena <pvalena@redhat.com> - 102-1
+* Mon Sep 16 2024 Pavel Valena <pvalena@redhat.com> - 103-1
+- Update to dracut 103.
+
+* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 102-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Sat Jul 13 2024 Pavel Valena <pvalena@redhat.com> - 102-2
+- Fixes for rhbz#2276271, rhbz#2295215
+
+* Fri Jun 28 2024 Pavel Valena <pvalena@redhat.com> - 102-1
 - Update to dracut 102.
 
 * Thu May 16 2024 Pavel Valena <pvalena@redhat.com> - 101-1
