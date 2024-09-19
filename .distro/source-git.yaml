@@ -20,7 +20,7 @@ files_to_sync:
 ##############################
 
 sources:
-- path: dracut-ng-102.tar.gz
+- path: dracut-ng-103.tar.gz
   url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/103.tar.gz
 
 specfile_path: .distro/dracut.spec
