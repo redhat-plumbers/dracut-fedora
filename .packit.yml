@@ -1,9 +1,29 @@
 # Docs: https://packit.dev/docs/
 
-specfile_path: .distro/dracut.spec
+upstream_project_url: git@github.com:dracut-ng/dracut-ng.git
+
+## TODO: #####################
+
+#files_to_sync:
+#- src: .distro/
+#  dest: .
+#  delete: true
+#  filters:
+#  - protect .git*
+#  - protect sources
+#  - exclude source-git.yaml
+#  - exclude .gitignore
 
 files_to_sync:
   - .distro/dracut.spec
+
+##############################
+
+sources:
+- path: dracut-ng-102.tar.gz
+  url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/103.tar.gz
+
+specfile_path: .distro/dracut.spec
 
 patch_generation_ignore_paths:
 - .distro/
@@ -12,7 +32,9 @@ patch_generation_ignore_paths:
 patch_generation_patch_id_digits: 1
 sync_changelog: true
 
-upstream_ref: "103"
+# TODO: #
+#upstream_ref: "103"
+upstream_ref: 3fce598fb45aa5618cdf885eb48cf327104ffcb8
 
 upstream_package_name: dracut
 downstream_package_name: dracut
