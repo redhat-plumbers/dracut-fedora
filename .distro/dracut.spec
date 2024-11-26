@@ -434,6 +434,10 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %changelog
 * Mon Sep 16 2024 Pavel Valena <pvalena@redhat.com> - 103-1
 - Update to dracut 103.
+- build: enable dracut-cpio binary
+- feat(fips-crypto-policies): make c-p follow FIPS mode automatically
+- fix(fips-crypto-policies): make it depend on fips dracut module
+- build: package fips-crypto-policies module
 
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 102-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
