@@ -7,8 +7,8 @@
 %global __requires_exclude pkg-config
 
 Name: dracut
-Version: 103
-Release: 2%{?dist}
+Version: 105
+Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -198,11 +198,19 @@ rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/95znet
 rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/00warpclock
 %endif
 
+# we don't want example configs
+rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/dracut.conf.d
+
+# we don't ship tests
+rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/test
+rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/80test*
+
 mkdir -p $RPM_BUILD_ROOT/boot/dracut
 mkdir -p $RPM_BUILD_ROOT/var/lib/dracut/overlay
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log
 touch $RPM_BUILD_ROOT%{_localstatedir}/log/dracut.log
 mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/initramfs
+mkdir -p $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d
 
 install -m 0644 dracut.conf.d/fedora.conf.example $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/01-dist.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man?/*suse*
@@ -250,6 +258,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %endif
 
 %{dracutlibdir}/modules.d/00bash
+%{dracutlibdir}/modules.d/00shell-interpreter
 %{dracutlibdir}/modules.d/00systemd
 %{dracutlibdir}/modules.d/00systemd-network-management
 %ifnarch s390 s390x
@@ -262,6 +271,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/01systemd-bsod
 %{dracutlibdir}/modules.d/01systemd-coredump
 %{dracutlibdir}/modules.d/01systemd-creds
+%{dracutlibdir}/modules.d/01systemd-cryptsetup
 %{dracutlibdir}/modules.d/01systemd-hostnamed
 %{dracutlibdir}/modules.d/01systemd-initrd
 %{dracutlibdir}/modules.d/01systemd-integritysetup
@@ -285,7 +295,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/03rescue
 %{dracutlibdir}/modules.d/04watchdog
 %{dracutlibdir}/modules.d/04watchdog-modules
-%{dracutlibdir}/modules.d/05busybox
 %{dracutlibdir}/modules.d/06dbus-broker
 %{dracutlibdir}/modules.d/06dbus-daemon
 %{dracutlibdir}/modules.d/06rngd
@@ -299,9 +308,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/62bluetooth
 %{dracutlibdir}/modules.d/80lvmmerge
 %{dracutlibdir}/modules.d/80lvmthinpool-monitor
-%{dracutlibdir}/modules.d/80test
-%{dracutlibdir}/modules.d/80test-makeroot
-%{dracutlibdir}/modules.d/80test-root
 %{dracutlibdir}/modules.d/90btrfs
 %{dracutlibdir}/modules.d/90crypt
 %{dracutlibdir}/modules.d/90dm
@@ -317,7 +323,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/90ppcmac
 %{dracutlibdir}/modules.d/90pcmcia
 %{dracutlibdir}/modules.d/90qemu
-%{dracutlibdir}/modules.d/90systemd-cryptsetup
 %{dracutlibdir}/modules.d/91crypt-gpg
 %{dracutlibdir}/modules.d/91crypt-loop
 %{dracutlibdir}/modules.d/91fido2
@@ -354,6 +359,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/98syslog
 %{dracutlibdir}/modules.d/98usrmount
 %{dracutlibdir}/modules.d/99base
+%{dracutlibdir}/modules.d/99busybox
 %{dracutlibdir}/modules.d/99memstrack
 %{dracutlibdir}/modules.d/99fs-lib
 %{dracutlibdir}/modules.d/99shutdown
@@ -385,7 +391,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/35connman
 %{dracutlibdir}/modules.d/35network-manager
 %{dracutlibdir}/modules.d/40network
-%{dracutlibdir}/modules.d/45ifcfg
 %{dracutlibdir}/modules.d/90kernel-network-modules
 %{dracutlibdir}/modules.d/90qemu-net
 %{dracutlibdir}/modules.d/95cifs
@@ -423,6 +428,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 
 %files squash
 %{dracutlibdir}/modules.d/99squash
+%{dracutlibdir}/modules.d/95squash-erofs
+%{dracutlibdir}/modules.d/95squash-squashfs
+%{dracutlibdir}/modules.d/99squash-lib
 
 %files config-generic
 %{dracutlibdir}/dracut.conf.d/02-generic-image.conf
@@ -432,6 +440,12 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Wed Jan 29 2025 Pavel Valena <pvalena@redhat.com> - 105-1
+- build: upgrade to dracut 105
+
+* Thu Jan 16 2025 Fedora Release Engineering <releng@fedoraproject.org> - 103-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
 * Thu Oct 31 2024 Manuel Fombuena <fombuena@outlook.com> - 103-2
 - fix(pcsc): add libpcsclite_real.so.*
 
