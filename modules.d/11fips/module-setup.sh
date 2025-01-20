@@ -5,6 +5,10 @@ check() {
     return 255
 }
 
+depends() {
+    echo openssl
+}
+
 # called by dracut
 installkernel() {
     local _fipsmodules _mod _bootfstype
