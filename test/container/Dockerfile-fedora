@@ -89,6 +89,8 @@ RUN dnf -y install --setopt=install_weak_deps=False \
     tpm2-tools \
     xfsprogs \
     xorriso \
+    xz \
+    openssl-devel \
     && dnf -y update && dnf clean all
 
 # CentOS Stream ships only qemu-kvm, but it disables the KVM accel when it's not available
