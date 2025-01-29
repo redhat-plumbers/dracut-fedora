@@ -178,7 +178,7 @@ shift
 [[ ${pv} -lt $v ]]
 
 : 'List files changed downstream'
-F="$((gitds ${v}-pre-rebase ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
+F="$( (gitds ${v}-pre-rebase ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
 
 
 : "Diff downstream changes"
@@ -191,6 +191,7 @@ gitds -p ${v}
 gitds -p ${v} > "dracut_rebase_${v}_changes_upstream_$(date -I).diff"
 
 wip
+
 
 : 'Upgrade files version'
 
