@@ -37,3 +37,6 @@ space_redirects    = true
 [man/*.xml]
 indent_style = space
 indent_size = 2
+
+[.distro/**]
+ignore = true
