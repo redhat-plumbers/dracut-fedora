@@ -51,6 +51,16 @@ ext () {
 }
 
 
+wip () {
+  {
+    echo -e "\n>>> WIP <<<\n"
+
+  } 2>/dev/null
+
+  exit 999
+}
+
+
 ## Syntax check
 zsh -n "$0"
 
@@ -160,11 +170,6 @@ shift
 [[ $c -lt 2 ]] && {
 : 'Continue #1'
 
-: "Diff from upstream changes"
-gitds -p ${v}
-gitds -p ${v} \
-  | tee "dracut_rebase_${v}_diff_upstream_$(date -I).log"
-
 : 'Get previous version'
 [[ -n "$pv" ]] || pv="$(( ${v} - 1 ))"
 
@@ -175,12 +180,17 @@ gitds -p ${v} \
 : 'List files changed downstream'
 F="$((gitds ${v}-pre-rebase ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
 
+
 : "Diff downstream changes"
 gitds -p ${v}-pre-rebase -- `echo $F`
-gitds -p ${v}-pre-rebase -- `echo $F` \
-  | tee "dracut_rebase_${v}_diff_downstream_$(date -I).log"
+gitds -p ${v}-pre-rebase -- `echo $F` > "dracut_rebase_${v}_changes_downstream_$(date -I).diff"
 
-exit 7
+
+: "Diff from upstream changes"
+gitds -p ${v}
+gitds -p ${v} > "dracut_rebase_${v}_changes_upstream_$(date -I).diff"
+
+wip
 
 : 'Upgrade files version'
 
@@ -231,8 +241,10 @@ popd
 
 exit 3
 }
-{ echo; } 2>/dev/null
-exit 999
+
+
+### WIP ###
+    wip
 
 
 # Third part
