@@ -31,6 +31,8 @@ patch_generation_ignore_paths:
 - .distro/
 - .packit.yml
 - .github/
+- .editorconfig
+- test/
 patch_generation_patch_id_digits: 1
 sync_changelog: true
 
