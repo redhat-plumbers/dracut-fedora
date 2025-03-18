@@ -1,3 +1,4 @@
+
 # Docs: https://packit.dev/docs/
 
 upstream_project_url: git@github.com:dracut-ng/dracut-ng.git
@@ -12,6 +13,10 @@ upstream_project_url: git@github.com:dracut-ng/dracut-ng.git
 #  filters:
 #  - protect .git*
 #  - protect sources
+#  - protect .fmf*
+#  - protect gating.yaml
+#  - protect plans.fmf
+#  - protect ci.fmf
 #  - exclude source-git.yaml
 #  - exclude .gitignore
 #  - exclude *.sh
@@ -70,8 +75,8 @@ jobs:
     - fedora-rawhide-x86_64
 #    - fedora-eln-x86_64
 
-## Create fedora PR
+## Create PR
 #- job: propose_downstream
 #  trigger: release
 #  dist_git_branches:
-#    - rawhide
+#    -
