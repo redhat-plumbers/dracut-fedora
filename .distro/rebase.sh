@@ -1,12 +1,13 @@
 #!/usr/bin/env zsh
 #
-# ./update.sh [opts] VERSION
+# .distro/rebase.sh [opts] VERSION
 #
 #   For version, only single number is currently expected.
 #
 # (opts must be in alphabetical order)
 #
 #   -b      branch to work in (default: main)
+#           Uses current branch if empty. Also used as a suffix!
 #
 #   -c X    continue with part X (default: 0)
 #
@@ -17,12 +18,16 @@
 #   -h      TODO: HELP (echo this)
 #
 #
-#   Rebase parts (ad "-c" arg)
+# Rebase parts (ad "-c" arg)
 #
-#     __TODO__
+#   __TODO__
 #
 #
-
+# Examples
+#
+#   $ .distro/rebase.sh -b rhel-10 -c 1 -p 103 105
+#
+#
 
 set -xe
 
@@ -74,9 +79,12 @@ zsh -n "$0"
 [[ "$1" == "-b" ]] && {
   b="${2}"
   shift 2 ||:
+
+  [[ -z "$b" ]] && {
+    b="$(gitb | grep '^* ' | cut -d' ' -f2-)"
+  }
   :
 } || b='main'
-
 
 : 'Continue = -c'
 [[ "$1" == "-c" ]] && {
@@ -127,6 +135,15 @@ shift
 } 2>/dev/null
 
 
+## Common vars
+[[ "$b" == 'main' ]] && {
+  s=''
+
+} || s="-${b}"
+
+p="${v}-pre-rebase${s}"
+
+
 ## First part
 [[ $c -lt 1 ]] && {
 
@@ -136,11 +153,6 @@ shift
   gitp
   gits | grep "^Your branch is up to date with"
 
-  [[ "$b" == 'main' ]] && \
-    s='' \
-    || s="-${b}"
-
-  p="${v}-pre-rebase${s}"
   : "Switch to pre-release branch: $p"
   dry gitcb "$p"
   dry gituu origin "$p"
@@ -177,18 +189,19 @@ shift
 [[ ${pv} -gt 0 ]]
 [[ ${pv} -lt $v ]]
 
+
 : 'List files changed downstream'
-F="$( (gitds ${v}-pre-rebase ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
+F="$( (gitds ${p} ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
 
 
 : "Diff downstream changes"
-gitds -p ${v}-pre-rebase -- `echo $F`
-gitds -p ${v}-pre-rebase -- `echo $F` > "dracut_rebase_${v}_changes_downstream_$(date -I).diff"
+gitds -p ${p} -- `echo $F`
+gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -I).diff"
 
 
 : "Diff from upstream changes"
 gitds -p ${v}
-gitds -p ${v} > "dracut_rebase_${v}_changes_upstream_$(date -I).diff"
+gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
 
 wip
 
