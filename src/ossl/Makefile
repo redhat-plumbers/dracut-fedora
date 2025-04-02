@@ -1,7 +1,7 @@
 .PHONY: all clean tests
 
 CFLAGS ?= -std=c99 -Wall -Werror -pedantic -D_XOPEN_SOURCE=600
-CRYPTO_FLAGS = -lcrypto -Wl,-pie -Wl,-z,now -fPIE -pie -fPIC
+CRYPTO_FLAGS = -lcrypto -Wl,-pie -Wl,-z,now -fPIE -pie -fPIC -Wno-ignored-qualifiers -Wno-sign-compare
 TARGETS = src/ossl-config src/ossl-files
 
 TESTS_CONFIG = $(wildcard tests/config/*.cnf)
