@@ -288,7 +288,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/03rescue
 %{dracutlibdir}/modules.d/04watchdog
 %{dracutlibdir}/modules.d/04watchdog-modules
-%{dracutlibdir}/modules.d/05busybox
 %{dracutlibdir}/modules.d/06dbus-broker
 %{dracutlibdir}/modules.d/06dbus-daemon
 %{dracutlibdir}/modules.d/06rngd
@@ -320,7 +319,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/90ppcmac
 %{dracutlibdir}/modules.d/90pcmcia
 %{dracutlibdir}/modules.d/90qemu
-%{dracutlibdir}/modules.d/90systemd-cryptsetup
 %{dracutlibdir}/modules.d/91crypt-gpg
 %{dracutlibdir}/modules.d/91crypt-loop
 %{dracutlibdir}/modules.d/91fido2
