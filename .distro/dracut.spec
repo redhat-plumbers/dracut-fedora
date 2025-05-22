@@ -199,19 +199,11 @@ rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/95znet
 rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/00warpclock
 %endif
 
-# we don't want example configs
-rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/dracut.conf.d
-
-# we don't ship tests
-rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/test
-rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/80test*
-
 mkdir -p $RPM_BUILD_ROOT/boot/dracut
 mkdir -p $RPM_BUILD_ROOT/var/lib/dracut/overlay
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log
 touch $RPM_BUILD_ROOT%{_localstatedir}/log/dracut.log
 mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/initramfs
-mkdir -p $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d
 
 install -m 0644 dracut.conf.d/fedora.conf.example $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/01-dist.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man?/*suse*
@@ -261,7 +253,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %endif
 
 %{dracutlibdir}/modules.d/00bash
-%{dracutlibdir}/modules.d/00shell-interpreter
 %{dracutlibdir}/modules.d/00systemd
 %{dracutlibdir}/modules.d/00systemd-network-management
 %ifnarch s390 s390x
@@ -272,10 +263,8 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/01systemd-ac-power
 %{dracutlibdir}/modules.d/01systemd-ask-password
 %{dracutlibdir}/modules.d/01systemd-bsod
-%{dracutlibdir}/modules.d/01systemd-battery-check
 %{dracutlibdir}/modules.d/01systemd-coredump
 %{dracutlibdir}/modules.d/01systemd-creds
-%{dracutlibdir}/modules.d/01systemd-cryptsetup
 %{dracutlibdir}/modules.d/01systemd-hostnamed
 %{dracutlibdir}/modules.d/01systemd-initrd
 %{dracutlibdir}/modules.d/01systemd-integritysetup
@@ -299,6 +288,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/03rescue
 %{dracutlibdir}/modules.d/04watchdog
 %{dracutlibdir}/modules.d/04watchdog-modules
+%{dracutlibdir}/modules.d/05busybox
 %{dracutlibdir}/modules.d/06dbus-broker
 %{dracutlibdir}/modules.d/06dbus-daemon
 %{dracutlibdir}/modules.d/06rngd
@@ -312,6 +302,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/62bluetooth
 %{dracutlibdir}/modules.d/80lvmmerge
 %{dracutlibdir}/modules.d/80lvmthinpool-monitor
+%{dracutlibdir}/modules.d/80test
+%{dracutlibdir}/modules.d/80test-makeroot
+%{dracutlibdir}/modules.d/80test-root
 %{dracutlibdir}/modules.d/90btrfs
 %{dracutlibdir}/modules.d/90crypt
 %{dracutlibdir}/modules.d/90dm
@@ -327,6 +320,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/90ppcmac
 %{dracutlibdir}/modules.d/90pcmcia
 %{dracutlibdir}/modules.d/90qemu
+%{dracutlibdir}/modules.d/90systemd-cryptsetup
 %{dracutlibdir}/modules.d/91crypt-gpg
 %{dracutlibdir}/modules.d/91crypt-loop
 %{dracutlibdir}/modules.d/91fido2
@@ -363,10 +357,8 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/98syslog
 %{dracutlibdir}/modules.d/98usrmount
 %{dracutlibdir}/modules.d/99base
-%{dracutlibdir}/modules.d/99busybox
 %{dracutlibdir}/modules.d/99memstrack
 %{dracutlibdir}/modules.d/99fs-lib
-%{dracutlibdir}/modules.d/99openssl
 %{dracutlibdir}/modules.d/99shutdown
 %attr(0644,root,root) %ghost %config(missingok,noreplace) %{_localstatedir}/log/dracut.log
 %dir %{_sharedstatedir}/initramfs
@@ -396,6 +388,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/35connman
 %{dracutlibdir}/modules.d/35network-manager
 %{dracutlibdir}/modules.d/40network
+%{dracutlibdir}/modules.d/45ifcfg
 %{dracutlibdir}/modules.d/90kernel-network-modules
 %{dracutlibdir}/modules.d/90qemu-net
 %{dracutlibdir}/modules.d/95cifs
@@ -433,9 +426,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 
 %files squash
 %{dracutlibdir}/modules.d/99squash
-%{dracutlibdir}/modules.d/95squash-erofs
-%{dracutlibdir}/modules.d/95squash-squashfs
-%{dracutlibdir}/modules.d/99squash-lib
 
 %files config-generic
 %{dracutlibdir}/dracut.conf.d/02-generic-image.conf
