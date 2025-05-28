@@ -48,10 +48,17 @@ upstream_ref: a2669c447bd5e0406f55efcc8c9c58be89458b08
 upstream_package_name: dracut
 downstream_package_name: dracut
 
+update_release: false
+
+# https://packit.dev/docs/configuration/actions
+
 #actions:
 #  post-upstream-clone:
     # Use the current specfile
 #    - "cp pkgbuild/dracut.spec ."
+
+#  changelog-entry:
+#    - .....
 
 jobs:
 # Build test
