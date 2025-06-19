@@ -147,6 +147,8 @@ p="${v}-pre-rebase${s}"
 ## First part
 [[ $c -lt 1 ]] && {
 
+  # TODO: ./rebase.sh -b rhel-10 -p 103 105
+
   : 'Checkout main'
   [[ -n "$b" ]]
   gitc "$b"
