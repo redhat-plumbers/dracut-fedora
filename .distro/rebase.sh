@@ -147,6 +147,8 @@ p="${v}-pre-rebase${s}"
 ## First part
 [[ $c -lt 1 ]] && {
 
+  # TODO: ./rebase.sh -b rhel-10 -p 103 105
+
   : 'Checkout main'
   [[ -n "$b" ]]
   gitc "$b"
@@ -203,7 +205,84 @@ gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -
 gitds -p ${v}
 gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
 
+
+# WORK IN PROGRESS
 wip
+
+
+# Next part
+
+## Todo: version bumps (probably a second step)
+rpmdev-bumpspec -D -c 'build: upgrade to dracut 107' -u 'Pavel Valena <pvalena@redhat.com>' .distro/*.spec
+
+nn .distro/dracut.spec
+
+
+
+gitl1 107-pre-rebase -1
+
+gitl1 107 -1
+
+
+nn .packit.yml
+
+cp -vi .packit.yml .distro/source-git.yaml
+
+nn .distro/source-git.yaml
+
+gita .packit.yml .distro/source-git.yaml
+
+
+gita .distro/dracut.spec
+
+
+## Todo: source-git commit
+gitim 'build: upgrade to dracut 107'
+
+gith
+
+## SRPM -- once
+nn .distro/*.spec
+n=1; rm .distro/*.patch; rm *.src.rpm; packit srpm --no-update-release --release-suffix ${n}
+nn .distro/*.patch
+
+
+# Next step
+## SRPM -- again?
+## TODO: builds
+
+### Report (if all succeeds?)
+gitd 107-pre-rebase | gist -spf dracut_rebase_107_changes_complete_$(date -I).diff
+
+
+### Next step
+
+gist -spf dracut_rebase_107_changes_downstream_2025-07-02.diff{,}
+gist -spf dracut_rebase_107_changes_upstream_2025-07-02.diff{,}
+
+
+MSG="
+Rebase from downstream commit a4e87db1ba678f7f3b65cd65730132ca399cdf3e onto upstream tag 107 (279da16f1b8fcca27d41937967c4e8f4c295086a).
+
+Test builds:
+ - Koji Rawhide: TBD
+ - Koji F42: TBD
+ - COPR: https://copr.fedorainfracloud.org/coprs/build/9233168
+
+Smoke tests:
+ - Rawhide aarch64: https://gist.github.com/pvalena/9151b9ae01288759a9b5d1bb989b99c7
+ - Rawhide x86_64 (no reboot): https://gist.github.com/pvalena/8f7b7d2ae219eaec9d68922eaf6d4372
+ - F42 aarch64: https://gist.github.com/pvalena/284a0cf9da6dcc2d0e40d239660d1e99
+ - F41 x86_64: https://gist.github.com/pvalena/e0016f383a00e032b0728ddd34b0239e
+
+Diff:
+ - Downstream-modified changes only: https://gist.github.com/pvalena/d1af4a74194e77417d496b6abe294ae9
+ - Changes from upstream: https://gist.github.com/pvalena/06fc42934b1f345e8a53b18075cc7eee
+ - Complete diff: https://gist.github.com/pvalena/12de812cc0ae7829c9d5479f2b44359e
+"
+
+
+gh pr create -f -a '@me' -R "redhat-plumbers/dracut-fedora"
 
 
 : 'Upgrade files version'
