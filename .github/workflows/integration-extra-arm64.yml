@@ -32,7 +32,7 @@ jobs:
                     - "80"
                     - "81"
         container:
-            image: ghcr.io/dracut-ng/${{ matrix.container }}:latest-arm
+            image: ghcr.io/${{ github.repository_owner }}/${{ matrix.container }}:latest-arm
             options: '--privileged'
         steps:
             - name: "Checkout Repository"

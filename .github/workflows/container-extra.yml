@@ -25,7 +25,6 @@ permissions:
 
 jobs:
     amd64:
-        if: github.repository == 'dracut-ng/dracut-ng' || vars.CONTAINER == 'enabled'
         name: ${{ matrix.config.tag }} on ${{ matrix.architecture.platform }}
         runs-on: ${{ matrix.architecture.runner }}
         concurrency:
