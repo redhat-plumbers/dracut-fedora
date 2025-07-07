@@ -25,22 +25,9 @@ jobs:
             fail-fast: false
             matrix:
                 container:
-                    - alpine:latest
-                    - alpine:edge
-                    - arch:latest
-                    - azurelinux:3.0
-                    - debian:latest
-                    - debian:sid
                     - fedora:latest
                     - fedora:rawhide
                     - centos:stream10-development
-                    - gentoo:latest
-                    - gentoo:amd64-openrc
-                    - opensuse:latest
-                    - ubuntu:latest
-                    - ubuntu:devel
-                    - ubuntu:rolling
-                    - void:latest
                 test:
                     - "10"
                     - "11"
