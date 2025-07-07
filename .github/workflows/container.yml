@@ -3,7 +3,7 @@ name: Container
 
 on:  # yamllint disable-line rule:truthy
     schedule:
-        - cron: '30 11 * * *'   # every day at 11:30 UTC
+        - cron: '15 14 * * *'   # every day at 11:30 UTC
     push:
         branches: [main]
         paths:
