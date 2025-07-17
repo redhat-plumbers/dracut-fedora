@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 107
-Release: 3%{?dist}
+Release: 2%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -447,10 +447,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
-* Fri Jul 11 2025 Adam Williamson <awilliam@redhat.com> - 107-3
+* Thu Jul 24 2025 Pavel Valena <pvalena@redhat.com> - 107-2
+- Revert "feat(hwdb): add hwdb module to install hwdb.bin on demand"
 - Revert an upstream change to fix kernel build (#2379116)
-
-* Thu Jul 10 2025 Adam Williamson <awilliam@redhat.com> - 107-2
 - Backport fix to bring back inst_library for anaconda (dracut-ng PR #1436)
 
 * Wed Jul 02 2025 Pavel Valena <pvalena@redhat.com> - 107-1
