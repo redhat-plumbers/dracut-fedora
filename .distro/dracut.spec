@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 107
-Release: 1%{?dist}
+Release: 3%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -288,6 +288,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/01systemd-resolved
 %{dracutlibdir}/modules.d/01systemd-sysext
 %{dracutlibdir}/modules.d/01systemd-sysctl
+%{dracutlibdir}/modules.d/01systemd-sysusers
 %{dracutlibdir}/modules.d/01systemd-timedated
 %{dracutlibdir}/modules.d/01systemd-timesyncd
 %{dracutlibdir}/modules.d/01systemd-tmpfiles
@@ -369,7 +370,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/99openssl
 %{dracutlibdir}/modules.d/99shutdown
 %{dracutlibdir}/modules.d/99shell-interpreter
-%{dracutlibdir}/modules.d/99systemd-sysusers
 %attr(0644,root,root) %ghost %config(missingok,noreplace) %{_localstatedir}/log/dracut.log
 %dir %{_sharedstatedir}/initramfs
 %if %{defined _unitdir}
@@ -447,6 +447,12 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Fri Jul 11 2025 Adam Williamson <awilliam@redhat.com> - 107-3
+- Revert an upstream change to fix kernel build (#2379116)
+
+* Thu Jul 10 2025 Adam Williamson <awilliam@redhat.com> - 107-2
+- Backport fix to bring back inst_library for anaconda (dracut-ng PR #1436)
+
 * Wed Jul 02 2025 Pavel Valena <pvalena@redhat.com> - 107-1
 - build: upgrade to dracut 107
 
