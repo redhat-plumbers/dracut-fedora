@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 107
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -452,6 +452,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Wed Sep 24 2025 Pavel Valena <pvalena@redhat.com> - 107-7
+- fix(systemd-udevd): handle root=gpt-auto for systemd-v258
+
 * Mon Aug 25 2025 Pavel Valena <pvalena@redhat.com> - 107-6
 - Add require on zstd to use it for initrd compression
 
