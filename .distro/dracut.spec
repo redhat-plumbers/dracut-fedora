@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 107
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -58,12 +58,17 @@ Requires: findutils
 Requires: grep
 Requires: kmod
 Requires: sed
+# Used as default initramfs compression algorithm
+Requires: zstd
+# Used to handle kernel modules which are xz compressed
 Requires: xz
-Requires: gzip
+# Not sure what this is needed for
+# Requires: gzip
 
 Recommends: memstrack
 Recommends: hardlink
-Recommends: pigz
+# Probably not needed anymore if we move zstd
+# Recommends: pigz
 Recommends: kpartx
 Recommends: (tpm2-tools if tpm2-tss)
 Requires: util-linux >= 2.21
@@ -109,7 +114,7 @@ initramfs with dracut, which drops capabilities.
 Summary: dracut modules to build a dracut initramfs with live image capabilities
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-network = %{version}-%{release}
-Requires: tar gzip coreutils bash device-mapper curl parted
+Requires: tar coreutils bash device-mapper curl parted
 %if ! 0%{?rhel}
 Requires: fuse ntfs-3g
 %endif
@@ -447,6 +452,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Mon Aug 25 2025 Pavel Valena <pvalena@redhat.com> - 107-6
+- Add require on zstd to use it for initrd compression
+
 * Thu Jul 24 2025 Pavel Valena <pvalena@redhat.com> - 107-5
 - Revert "feat(hwdb): add hwdb module to install hwdb.bin on demand"
 
