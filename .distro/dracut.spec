@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 103
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -432,6 +432,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Thu Aug 21 2025 Pavel Valena <pvalena@redhat.com> - 103-3
+- fix(dracut-functions.sh): only return block devices from get_persistent_dev
+
 * Tue Nov 26 2024 Pavel Valena <pvalena@redhat.com> - 103-2
 - Update to dracut 103.
 - build: enable dracut-cpio binary
