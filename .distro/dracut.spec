@@ -7,8 +7,8 @@
 %global __requires_exclude pkg-config
 
 Name: dracut
-Version: 107
-Release: 6%{?dist}
+Version: 108
+Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -452,6 +452,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Tue Aug 26 2025 Pavel Valena <pvalena@redhat.com> - 108-1
+- build: upgrade to dracut 108
+
 * Mon Aug 25 2025 Pavel Valena <pvalena@redhat.com> - 107-6
 - Add require on zstd to use it for initrd compression
 
