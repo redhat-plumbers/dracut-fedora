@@ -206,8 +206,15 @@ gitds -p ${v}
 gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
 
 
+: "Complete diff"
+gitds -p ${p}
+gitds -p ${p} > "dracut_rebase_${v}_changes_complete${s}_$(date -I).diff"
+
+
 # WORK IN PROGRESS
 wip
+
+ls -d dracut_rebase_108_changes_*| xargs -ri zsh -c "echo -n '{}: '; gist -spf {}{,}"
 
 
 # Next part
