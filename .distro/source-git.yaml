@@ -27,8 +27,8 @@ files_to_sync:
 ##############################
 
 sources:
-- path: dracut-ng-107.tar.gz
-  url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/107.tar.gz
+- path: dracut-ng-108.tar.gz
+  url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/108.tar.gz
 
 specfile_path: .distro/dracut.spec
 
@@ -42,8 +42,8 @@ patch_generation_patch_id_digits: 1
 sync_changelog: true
 
 # TODO: #
-#upstream_ref: "107"
-upstream_ref: 279da16f1b8fcca27d41937967c4e8f4c295086a
+#upstream_ref: "108"
+upstream_ref: 97c5568ec42abd5e6035f0cfa9d319ae6ae4e50a
 
 upstream_package_name: dracut
 downstream_package_name: dracut
