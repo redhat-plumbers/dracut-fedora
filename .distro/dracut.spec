@@ -40,7 +40,7 @@ BuildRequires: openssl-devel
 
 %if %{with doc}
 BuildRequires: docbook-style-xsl docbook-dtds libxslt
-BuildRequires: asciidoc
+BuildRequires: asciidoctor
 %endif
 
 Obsoletes: dracut-fips <= 047
