@@ -293,7 +293,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/11systemd-resolved
 %{dracutlibdir}/modules.d/11systemd-sysext
 %{dracutlibdir}/modules.d/11systemd-sysctl
-%{dracutlibdir}/modules.d/01systemd-sysusers
+%{dracutlibdir}/modules.d/68systemd-sysusers
 %{dracutlibdir}/modules.d/11systemd-timedated
 %{dracutlibdir}/modules.d/11systemd-timesyncd
 %{dracutlibdir}/modules.d/11systemd-tmpfiles
@@ -1674,14 +1674,14 @@ Resolves: rhbz#728863
 
 * Wed Mar 30 2011 Harald Hoyer <harald@redhat.com> 009-3
 - fixed dhcp
-- added /lib/firmware/updates to firmware directories 
+- added /lib/firmware/updates to firmware directories
 - fixed LiveCD /dev/.initramfs fallback
 - fixed cdrom polling
 - dropped net-tools dependency
 
 * Tue Mar 29 2011 Harald Hoyer <harald@redhat.com> 009-2
 - fixed empty output file argument handling:
-  "dracut '' <kernel version>" 
+  "dracut '' <kernel version>"
 
 * Mon Mar 28 2011 Harald Hoyer <harald@redhat.com> 009-1
 - version 009
@@ -1765,19 +1765,19 @@ Resolves: rhbz#599593
 - add aes kernel modules and fix crypt handling (patch 137, patch 140 and patch 147)
 Resolves: rhbz#600170
 
-* Thu May 27 2010 Harald Hoyer <harald@redhat.com> 
+* Thu May 27 2010 Harald Hoyer <harald@redhat.com>
 - fixed Requirements
-- fixed autoip6 
+- fixed autoip6
 Resolves: rhbz#538388
 - fixed multipath
 Resolves: rhbz#595719
 
-* Thu May 06 2010 Harald Hoyer <harald@redhat.com> 
+* Thu May 06 2010 Harald Hoyer <harald@redhat.com>
 - only display short password messages
 Resolves: rhbz#561092
 
 * Thu May 06 2010 Harald Hoyer <harald@redhat.com>
-- fixed dracut manpages 
+- fixed dracut manpages
 Resolves: rhbz#589109
 - use ccw-init and ccw rules from s390utils
 Resolves: rhbz#533494
@@ -1785,7 +1785,7 @@ Resolves: rhbz#533494
 Resolves: rhbz#486244
 - various other bugfixes seen in Fedora
 
-* Tue Apr 20 2010 Harald Hoyer <harald@redhat.com> 
+* Tue Apr 20 2010 Harald Hoyer <harald@redhat.com>
 - fixed network with multiple nics
 - fixed nfsidmap paths
 - do not run blkid on non active container raids
@@ -1799,19 +1799,19 @@ Resolves: rhbz#486244
 - add module btrfs
 - teach dmsquash live-root to use rootflags
 - trigger udev with action=add
-- fixed add_drivers handling 
+- fixed add_drivers handling
 - add sr_mod
 - use pigz instead of gzip, if available
 
-* Thu Mar 25 2010 Harald Hoyer <harald@redhat.com> 
+* Thu Mar 25 2010 Harald Hoyer <harald@redhat.com>
 - removed firmware requirements (rhbz#572634)
 - add /etc/dracut.conf.d
 - Resolves: rhbz#572634
 
-* Fri Mar 19 2010 Harald Hoyer <harald@redhat.com> 
+* Fri Mar 19 2010 Harald Hoyer <harald@redhat.com>
 - version 005
 
-* Fri Mar 19 2010 Harald Hoyer <harald@redhat.com> 
+* Fri Mar 19 2010 Harald Hoyer <harald@redhat.com>
 - fixed rpmlint errors (rhbz#570547)
 - removed firmware package from dracut-kernel (rhbz#572634)
 - add dcb support to dracut's FCoE support (rhbz#563794)
@@ -1840,7 +1840,7 @@ Resolves: rhbz#486244
 
 * Fri Jan 15 2010 Harald Hoyer <harald@redhat.com> 004-1
 - version 004
-- Resolves: rhbz#529339 rhbz#533494 rhbz#548550 
+- Resolves: rhbz#529339 rhbz#533494 rhbz#548550
 - Resolves: rhbz#548555 rhbz#553195
 
 * Wed Jan 13 2010 Harald Hoyer <harald@redhat.com> 003-3
@@ -1924,7 +1924,7 @@ Resolves: rhbz#486244
 
 * Thu Oct 01 2009 Harald Hoyer <harald@redhat.com> 002-10
 - do not destroy assembled raid arrays if mdadm.conf present
-- mount /dev/shm 
+- mount /dev/shm
 - let udevd not resolve group and user names
 - preserve timestamps of tools on initramfs generation
 - generate symlinks for binaries correctly
@@ -1952,7 +1952,7 @@ Resolves: rhbz#486244
 - build with the correct tarball
 
 * Wed Sep 23 2009 Harald Hoyer <harald@redhat.com> 002-6
-- add new device mapper udev rules and dmeventd 
+- add new device mapper udev rules and dmeventd
   bug 525319, 525015
 
 * Wed Sep 23 2009 Warren Togami <wtogami@redaht.com> 002-5
@@ -1963,8 +1963,8 @@ Resolves: rhbz#486244
 - Fix LiveCD boot regression
 
 * Mon Sep 21 2009 Harald Hoyer <harald@redhat.com> 002-3
-- bail out if selinux policy could not be loaded and 
-  selinux=0 not specified on kernel command line 
+- bail out if selinux policy could not be loaded and
+  selinux=0 not specified on kernel command line
   (bug #524113)
 - set finished criteria for dmsquash live images
 
@@ -2025,7 +2025,7 @@ Resolves: rhbz#486244
 - version 0.9
 
 * Thu Aug 06 2009 Harald Hoyer <harald@redhat.com> 0.8-1
-- version 0.8 
+- version 0.8
 - see http://dracut.git.sourceforge.net/git/gitweb.cgi?p=dracut/dracut;a=blob_plain;f=NEWS
 
 * Fri Jul 24 2009 Harald Hoyer <harald@redhat.com> 0.7-1
