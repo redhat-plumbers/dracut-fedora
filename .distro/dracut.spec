@@ -216,13 +216,13 @@ mkdir -p $RPM_BUILD_ROOT/var/lib/dracut/overlay
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log
 touch $RPM_BUILD_ROOT%{_localstatedir}/log/dracut.log
 mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/initramfs
-mkdir -p $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d
+mkdir -p $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/rescue
 
 install -m 0644 dracut.conf.d/fedora.conf.example $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/01-dist.conf
+install -m 0644 dracut.conf.d/rescue/10-rescue.conf $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/rescue/10-rescue.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man?/*suse*
 
 echo 'hostonly="no"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-generic-image.conf
-echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-rescue.conf
 
 %files
 %if %{with doc}
@@ -450,7 +450,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/dracut.conf.d/02-generic-image.conf
 
 %files config-rescue
-%{dracutlibdir}/dracut.conf.d/02-rescue.conf
+%{dracutlibdir}/dracut.conf.d/rescue/10-rescue.conf
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
