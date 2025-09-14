@@ -11,14 +11,14 @@ installkernel() {
 
     if [[ ${DRACUT_ARCH:-$(uname -m)} == arm* || ${DRACUT_ARCH:-$(uname -m)} == aarch64 ]]; then
         # arm/aarch64 specific modules needed by drm
-        hostonly=$(optional_hostonly) instmods \
+        instmods \
             "=drivers/gpu/drm/i2c" \
             "=drivers/gpu/drm/panel" \
             "=drivers/gpu/drm/bridge" \
             "=drivers/video/backlight"
     fi
 
-    hostonly=$(optional_hostonly) instmods amdkfd hyperv_fb "=drivers/pwm"
+    instmods amdkfd hyperv_fb "=drivers/pwm"
 
     # if the hardware is present, include module even if it is not currently loaded,
     # as we could e.g. be in the installer; nokmsboot boot parameter will disable
@@ -47,7 +47,7 @@ installkernel() {
             [[ -L $i ]] || continue
             modlink=$(readlink "$i")
             modname=$(basename "$modlink")
-            hostonly=$(optional_hostonly) instmods "$modname"
+            instmods "$modname"
         done
     else
         dracut_instmods -o -s "drm_crtc_init|drm_dev_register|drm_encoder_init" "=drivers/gpu/drm" "=drivers/staging"

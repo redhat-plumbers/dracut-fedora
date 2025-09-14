@@ -34,7 +34,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly=$(optional_hostonly) instmods '=drivers/md'
+    instmods '=drivers/md'
 }
 
 # called by dracut

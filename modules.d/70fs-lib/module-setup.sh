@@ -40,7 +40,7 @@ installkernel() {
         for_each_host_dev_fs include_fs_helper_modules
         :
     else
-        hostonly='' instmods crc32c crc32
+        instmods crc32c crc32
     fi
 }
 

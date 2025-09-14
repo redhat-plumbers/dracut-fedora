@@ -24,7 +24,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly='' instmods nbd
+    instmods nbd
 }
 
 # called by dracut

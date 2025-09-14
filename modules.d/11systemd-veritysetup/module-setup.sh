@@ -33,7 +33,7 @@ config() {
 
 # Install kernel module(s).
 installkernel() {
-    hostonly='' instmods dm-verity
+    instmods dm-verity
 }
 
 # Install the required file(s) and directories for the module in the initramfs.

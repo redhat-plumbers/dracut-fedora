@@ -13,7 +13,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly=$(optional_hostonly) instmods pcmcia \
+    instmods pcmcia \
         "=drivers/pcmcia"
 }
 
