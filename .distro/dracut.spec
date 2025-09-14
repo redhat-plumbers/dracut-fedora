@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 108
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -454,6 +454,10 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Sun Sep 14 2025 Pavel Valena <pvalena@redhat.com> - 108-2
+- revert: hostonly-sloppy mode changes
+  Resolves: rhbz#2394213
+
 * Tue Aug 26 2025 Pavel Valena <pvalena@redhat.com> - 108-1
 - build: upgrade to dracut 108
 
