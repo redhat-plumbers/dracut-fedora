@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 107
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -447,6 +447,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Sun Sep 14 2025 Pavel Valena <pvalena@redhat.com> - 107-3
+- revert: hostonly-sloppy mode changes
+
 * Thu Jul 24 2025 Pavel Valena <pvalena@redhat.com> - 107-2
 - Revert "feat(hwdb): add hwdb module to install hwdb.bin on demand"
 - Revert an upstream change to fix kernel build (#2379116)
