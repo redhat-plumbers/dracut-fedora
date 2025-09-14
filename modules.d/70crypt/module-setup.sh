@@ -51,7 +51,7 @@ installkernel() {
             fi
         done
     else
-        hostonly='' instmods "=crypto"
+        instmods "=crypto"
     fi
     return 0
 }

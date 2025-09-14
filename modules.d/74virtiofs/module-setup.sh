@@ -21,7 +21,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly='' instmods virtiofs virtio_pci
+    instmods virtiofs virtio_pci
 }
 
 # called by dracut
