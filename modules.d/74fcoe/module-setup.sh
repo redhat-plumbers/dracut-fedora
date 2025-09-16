@@ -7,7 +7,7 @@ check() {
         block_is_fcoe "$1" || return 1
     }
 
-    [[ $hostonly_mode == "strict" ]] || [[ $mount_needs ]] && {
+    [[ $hostonly ]] || [[ $mount_needs ]] && {
         for_each_host_dev_and_slaves is_fcoe || return 255
     }
 
@@ -23,7 +23,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly=$(optional_hostonly) instmods fcoe libfcoe 8021q edd bnx2fc
+    instmods fcoe libfcoe 8021q edd bnx2fc
 }
 
 get_vlan_parent() {

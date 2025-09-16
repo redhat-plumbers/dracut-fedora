@@ -2,7 +2,7 @@
 
 # called by dracut
 check() {
-    [[ $hostonly_mode == "strict" ]] || [[ $mount_needs ]] && {
+    [[ $hostonly ]] || [[ $mount_needs ]] && {
         is_qemu_virtualized && return 0
 
         for fs in "${host_fs_types[@]}"; do
@@ -21,7 +21,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly='' instmods virtiofs virtio_pci
+    instmods virtiofs virtio_pci
 }
 
 # called by dracut

@@ -36,11 +36,11 @@ include_fs_helper_modules() {
 # called by dracut
 installkernel() {
     # xfs/btrfs/ext4 need crc32c, f2fs needs crc32
-    if [[ $hostonly_mode == "strict" ]]; then
+    if [[ $hostonly ]]; then
         for_each_host_dev_fs include_fs_helper_modules
         :
     else
-        hostonly='' instmods crc32c crc32
+        instmods crc32c crc32
     fi
 }
 
@@ -59,7 +59,7 @@ install() {
             xfs_db xfs_check xfs_repair xfs_metadump
             e2fsck jfs_fsck btrfsck
         )
-        if [[ $hostonly_mode == "strict" ]]; then
+        if [[ $hostonly ]]; then
             read -r -a _helpers < <(for_each_host_dev_fs echo_fs_helper)
         fi
     else

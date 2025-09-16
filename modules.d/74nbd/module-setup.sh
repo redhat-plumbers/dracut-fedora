@@ -6,7 +6,7 @@ check() {
 
     # if an nbd device is not somewhere in the chain of devices root is
     # mounted on, fail the hostonly check.
-    [[ $hostonly_mode == "strict" ]] || [[ $mount_needs ]] && {
+    [[ $hostonly ]] || [[ $mount_needs ]] && {
         _rootdev=$(find_root_block_device)
         [[ -b /dev/block/$_rootdev ]] || return 1
         check_block_and_slaves block_is_nbd "$_rootdev" || return 255
@@ -24,7 +24,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly='' instmods nbd
+    instmods nbd
 }
 
 # called by dracut

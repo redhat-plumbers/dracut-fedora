@@ -6,9 +6,9 @@ check() {
     require_binaries iscsi-iname iscsiadm iscsid || return 1
     require_kernel_modules iscsi_tcp || return 1
 
-    # If hostonly strict was requested, fail the check if we are not actually
+    # If hostonly was requested, fail the check if we are not actually
     # booting from root.
-    [[ $hostonly_mode == "strict" ]] || [[ $mount_needs ]] && {
+    [[ $hostonly ]] || [[ $mount_needs ]] && {
         pushd . > /dev/null
         for_each_host_dev_and_slaves block_is_iscsi
         local _is_iscsi=$?
@@ -162,7 +162,7 @@ installkernel() {
     local _arch=${DRACUT_ARCH:-$(uname -m)}
     local _funcs='iscsi_register_transport'
 
-    hostonly=$(optional_hostonly) instmods bnx2i qla4xxx cxgb3i cxgb4i be2iscsi qedi
+    instmods bnx2i qla4xxx cxgb3i cxgb4i be2iscsi qedi
     hostonly="" instmods iscsi_tcp iscsi_ibft crc32c iscsi_boot_sysfs 8021q
 
     if [ "$_arch" = "s390" ] || [ "$_arch" = "s390x" ]; then

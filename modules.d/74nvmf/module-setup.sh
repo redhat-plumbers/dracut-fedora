@@ -42,7 +42,7 @@ check() {
         [[ $found ]]
     }
 
-    [[ $hostonly_mode == "strict" ]] || [[ $mount_needs ]] && {
+    [[ $hostonly ]] || [[ $mount_needs ]] && {
         [ -f /etc/nvme/hostnqn ] || return 255
         [ -f /etc/nvme/hostid ] || return 255
         pushd . > /dev/null
@@ -69,7 +69,7 @@ depends() {
 
 # called by dracut
 installkernel() {
-    hostonly=$(optional_hostonly) instmods nvme_fc nvme_tcp nvme_rdma lpfc qla2xxx
+    instmods nvme_fc nvme_tcp nvme_rdma lpfc qla2xxx
     # 802.1q VLAN may be set up in Firmware later. Include the module always.
     hostonly="" instmods 8021q
 }

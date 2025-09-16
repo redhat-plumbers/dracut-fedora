@@ -31,7 +31,7 @@ installkernel() {
 
     dracut_instmods -o -P ".*${_unwanted_drivers}.*" -s "$_net_symbols" "=drivers/net"
     #instmods() will take care of hostonly
-    hostonly=$(optional_hostonly) instmods \
+    instmods \
         '=drivers/net/mdio' \
         '=drivers/net/phy' \
         '=drivers/net/team' \

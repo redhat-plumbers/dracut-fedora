@@ -12,7 +12,7 @@ depends() {
 }
 
 installkernel() {
-    hostonly='' instmods btrfs ext4 xfs
+    instmods btrfs ext4 xfs
 }
 
 install() {

@@ -25,7 +25,7 @@ depends() {
 
 # Install kernel module(s).
 installkernel() {
-    hostonly=$(optional_hostonly) instmods '=drivers/char/tpm'
+    instmods '=drivers/char/tpm'
 }
 
 # Install the required file(s) and directories for the module in the initramfs.

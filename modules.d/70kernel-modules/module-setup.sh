@@ -25,7 +25,7 @@ installkernel() {
     }
 
     install_block_modules() {
-        hostonly=$(optional_hostonly) instmods \
+        instmods \
             scsi_dh_rdac scsi_dh_emc scsi_dh_alua \
             =drivers/usb/storage \
             =ide nvme vmd \
@@ -58,7 +58,7 @@ installkernel() {
             "=drivers/usb/typec" \
             "=drivers/watchdog"
 
-        hostonly=$(optional_hostonly) instmods \
+        instmods \
             yenta_socket intel_lpss_pci spi_pxa2xx_platform \
             atkbd i8042 firewire-ohci hv-vmbus \
             virtio virtio_ring virtio_pci pci_hyperv \
@@ -67,7 +67,7 @@ installkernel() {
         if [[ ${DRACUT_ARCH:-$(uname -m)} == arm* || ${DRACUT_ARCH:-$(uname -m)} == aarch64 || ${DRACUT_ARCH:-$(uname -m)} == riscv* ]]; then
             # arm/aarch64 specific modules
             _blockfuncs+='|dw_mc_probe|dw_mci_pltfm_register|nvme_init_ctrl'
-            hostonly=$(optional_hostonly) instmods \
+            instmods \
                 "=drivers/clk" \
                 "=drivers/devfreq" \
                 "=drivers/dma" \
@@ -107,9 +107,9 @@ installkernel() {
 
         awk -F: '/^\// {print $1}' "$srcmods/modules.dep" 2> /dev/null | instmods
 
-        # if not on strict hostonly mode, or there are hostonly block device
+        # if not on hostonly mode, or there are hostonly block device
         # install block drivers
-        if [[ $hostonly_mode != "strict" ]] \
+        if ! [[ ${hostonly-} ]] \
             || for_each_host_dev_and_slaves_all record_block_dev_drv; then
             hostonly='' instmods sg sr_mod sd_mod scsi_dh ata_piix
 
@@ -120,13 +120,13 @@ installkernel() {
             fi
         fi
 
-        # if not on strict hostonly mode, install all known filesystems,
+        # if not on hostonly mode, install all known filesystems,
         # if the required list is not set via the filesystems variable
-        if [[ $hostonly_mode != "strict" ]] && [[ -z $filesystems ]]; then
-            dracut_instmods -o -P ".*/(kernel/fs/nfs|kernel/fs/nfsd|kernel/fs/lockd)/.*" '=fs'
-        fi
-
-        if [[ ${hostonly-} ]] && [[ "${host_fs_types[*]}" ]]; then
+        if ! [[ ${hostonly-} ]]; then
+            if [[ -z $filesystems ]]; then
+                dracut_instmods -o -P ".*/(kernel/fs/nfs|kernel/fs/nfsd|kernel/fs/lockd)/.*" '=fs'
+            fi
+        elif [[ "${host_fs_types[*]}" ]]; then
             hostonly='' instmods "${host_fs_types[@]}"
         fi
 
@@ -139,7 +139,7 @@ installkernel() {
         [[ $arch == aarch64 ]] && arch=arm64
         [[ $arch == loongarch64 ]] && arch=loongarch
         hostonly='' instmods "=crypto"
-        hostonly=$(optional_hostonly) instmods "=arch/$arch/crypto" "=drivers/crypto"
+        instmods "=arch/$arch/crypto" "=drivers/crypto"
     fi
 
     inst_multiple -o "$depmodd/*.conf"
