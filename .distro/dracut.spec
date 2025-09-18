@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 108
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -454,6 +454,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Tue Oct 07 2025 Pavel Valena <pvalena@redhat.com> - 108-3
+- fix: partial revert for hostonly sloppy mode
+
 * Wed Sep 10 2025 Pavel Valena <pvalena@redhat.com> - 108-2
 - Reapply "feat(systemd-sysusers): run systemd-sysusers as part
 
