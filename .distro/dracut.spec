@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 107
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -447,6 +447,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Wed Sep 24 2025 Pavel Valena <pvalena@redhat.com> - 107-4
+- fix(systemd): add missing modprobe@.service
+
 * Sun Sep 14 2025 Pavel Valena <pvalena@redhat.com> - 107-3
 - revert: hostonly-sloppy mode changes
 
