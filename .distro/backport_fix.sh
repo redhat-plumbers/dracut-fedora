@@ -125,7 +125,7 @@ or="${1:-upstream-ng}"
   :
 } || {
   dist=fedora
-  [[ -z "${rv}" ]] && remote=main || remote="f${rv}"
+  [[ -z "$rv" || "$rv" = main ]] && remote=main || remote="f${rv}"
 }
 
 [[ -z "$REF" ]] && rf="pr${pr}" || rf="${or}/${pr}"
@@ -149,6 +149,8 @@ or="${1:-upstream-ng}"
   [[ -n "$DEL" ]] && gitbd "${br}" ||:
 
   gitcb "${br}"
+
+  gitcb "${remote}-fix-${bn}"
 
   [[ -z "$FED" ]] && {
     gitrh "${remote}/main"
