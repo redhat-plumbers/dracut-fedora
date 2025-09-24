@@ -72,14 +72,14 @@ zsh -n "$0"
 
 { echo ; } 2>/dev/null
 
-[[ -z "$FED" ]] && {
-  : 'DISTRO version #'
-  rv="${1}"
-  {
-    [[ -n "$rv" ]]
-    shift
-  } 2>/dev/null
+: 'DISTRO version #'
+rv="${1}"
+{
+  [[ -n "$rv" ]]
+  shift
+} 2>/dev/null
 
+[[ -z "$FED" ]] && {
   : 'Jira issue #'
   bn="${1}"
   {
@@ -123,7 +123,7 @@ or="${1:-upstream-ng}"
   :
 } || {
   dist=fedora
-  remote=main
+  [[ -z "$rv" || "$rv" = main ]] && remote=main || remote="f${rv}"
 }
 
 [[ -z "$REF" ]] && rf="pr${pr}" || rf="${or}/${pr}"
@@ -137,19 +137,18 @@ or="${1:-upstream-ng}"
 
   gitt
   gitc "${remote}"
+  gitp
 
   [[ -n "$DEL" ]] && gitbd "${remote}-fix-${bn}" ||:
 
+  gitcb "${remote}-fix-${bn}"
+
   [[ -z "$FED" ]] && {
-    gitp "${remote}"
-    gitcb "${remote}-fix-${bn}"
     gitrh "${remote}/main"
     :
   } || {
 
-    gitfo
-    gitcb "backport-fix-${bn}"
-    gitrho
+    gitrh "origin/$remote"
   }
 
   [[ -z "$REF" ]] && gitf "${or}" "refs/pull/${pr}/head:${rf}"
