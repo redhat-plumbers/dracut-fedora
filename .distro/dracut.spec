@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 108
-Release: 7%{?dist}
+Release: 8%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -454,6 +454,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Fri Sep 04 2026 Pavel Valena <pvalena@redhat.com> - 108-8
+- fix(network-manager): hostname not set with old systemd service units
+
 * Wed Apr 29 2026 Pavel Valena <pvalena@redhat.com> - 108-7
 - fix(tpm2-tss): add tss user/group in addition to sysusers config
 
