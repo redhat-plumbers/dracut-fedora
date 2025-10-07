@@ -75,7 +75,9 @@ zsh -n "$0"
 : 'DISTRO version #'
 rv="${1}"
 {
-  [[ -n "$rv" ]]
+  [[ -n "${rv}" ]] || {
+    [[ -n "$FED" ]]
+  }
   shift
 } 2>/dev/null
 
@@ -123,7 +125,7 @@ or="${1:-upstream-ng}"
   :
 } || {
   dist=fedora
-  [[ -z "$rv" || "$rv" = main ]] && remote=main || remote="f${rv}"
+  [[ -z "${rv}" ]] && remote=main || remote="f${rv}"
 }
 
 [[ -z "$REF" ]] && rf="pr${pr}" || rf="${or}/${pr}"
@@ -132,16 +134,21 @@ or="${1:-upstream-ng}"
 { echo ; } 2>/dev/null
 
 [[ -z "$CON" ]] && {
-  : "Create ${remote}-fix-${bn}?"
+  br="${bn}"
+
+  [[ -z "$FED" ]] && br="fix-${br}" || br="backport-${br}"
+  [[ -n "${rv}" ]] && br="${remote}-fix-${br}"
+
+  : "Create ${br}?"
   read '?-->continue?'
 
   gitt
   gitc "${remote}"
   gitp
 
-  [[ -n "$DEL" ]] && gitbd "${remote}-fix-${bn}" ||:
+  [[ -n "$DEL" ]] && gitbd "${br}" ||:
 
-  gitcb "${remote}-fix-${bn}"
+  gitcb "${br}"
 
   [[ -z "$FED" ]] && {
     gitrh "${remote}/main"
@@ -239,11 +246,11 @@ gitlp ||:
 
 [[ -z "$FED" ]] && {
   gituu "${remote}"
+  gh pr create -f -a '@me' -R "redhat-plumbers/dracut-rhel${rv}"
   :
 
 } || {
   gituu
+  [[ -z "${rv}" ]] && gh pr create -f -a '@me' -R "redhat-plumbers/dracut-fedora"
 
 }
-
-gh pr create -f -a '@me' -R "redhat-plumbers/dracut-rhel${rv}"
