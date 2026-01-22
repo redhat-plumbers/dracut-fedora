@@ -7,7 +7,7 @@
 %global __requires_exclude pkg-config
 
 Name: dracut
-Version: 108
+Version: 109
 Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
@@ -218,7 +218,7 @@ touch $RPM_BUILD_ROOT%{_localstatedir}/log/dracut.log
 mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/initramfs
 mkdir -p $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d
 
-install -m 0644 dracut.conf.d/fedora.conf.example $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/01-dist.conf
+install -m 0644 dracut.conf.d/fedora/01-dist.conf $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/01-dist.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man?/*suse*
 
 echo 'hostonly="no"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-generic-image.conf
@@ -293,7 +293,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/11systemd-resolved
 %{dracutlibdir}/modules.d/11systemd-sysext
 %{dracutlibdir}/modules.d/11systemd-sysctl
-%{dracutlibdir}/modules.d/01systemd-sysusers
+%{dracutlibdir}/modules.d/78systemd-sysusers
 %{dracutlibdir}/modules.d/11systemd-timedated
 %{dracutlibdir}/modules.d/11systemd-timesyncd
 %{dracutlibdir}/modules.d/11systemd-tmpfiles
@@ -322,6 +322,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/70dm
 %{dracutlibdir}/modules.d/70dmraid
 %{dracutlibdir}/modules.d/70kernel-modules
+%{dracutlibdir}/modules.d/70kernel-modules-export
 %{dracutlibdir}/modules.d/70kernel-modules-extra
 %{dracutlibdir}/modules.d/70lvm
 %{dracutlibdir}/modules.d/70mdraid
@@ -454,6 +455,21 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Thu Jan 22 2026 Pavel Valena <pvalena@redhat.com> - 109-1
+- Rebase to dracut-109
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 108-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 108-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Tue Oct 07 2025 Pavel Valena <pvalena@redhat.com> - 108-3
+- fix: partial revert for hostonly sloppy mode
+
+* Wed Sep 10 2025 Pavel Valena <pvalena@redhat.com> - 108-2
+- Reapply "feat(systemd-sysusers): run systemd-sysusers as part
+
 * Tue Aug 26 2025 Pavel Valena <pvalena@redhat.com> - 108-1
 - build: upgrade to dracut 108
 

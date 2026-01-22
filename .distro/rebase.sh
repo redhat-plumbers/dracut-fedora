@@ -182,33 +182,33 @@ p="${v}-pre-rebase${s}"
 
 ## Second part
 [[ $c -lt 2 ]] && {
-: 'Continue #1'
+  : 'Continue #1'
 
-: 'Get previous version'
-[[ -n "$pv" ]] || pv="$(( ${v} - 1 ))"
+  : 'Get previous version'
+  [[ -n "$pv" ]] || pv="$(( ${v} - 1 ))"
 
-[[ -n "$pv" ]]
-[[ ${pv} -gt 0 ]]
-[[ ${pv} -lt $v ]]
-
-
-: 'List files changed downstream'
-F="$( (gitds ${p} ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
+  [[ -n "$pv" ]]
+  [[ ${pv} -gt 0 ]]
+  [[ ${pv} -lt $v ]]
 
 
-: "Diff downstream changes"
-gitds -p ${p} -- `echo $F`
-gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -I).diff"
+  : 'List files changed downstream'
+  F="$( (gitds ${p} ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
 
 
-: "Diff from upstream changes"
-gitds -p ${v}
-gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
+  : "Diff downstream changes"
+  gitds -p ${p} -- `echo $F`
+  gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -I).diff"
 
 
-: "Complete diff"
-gitds -p ${p}
-gitds -p ${p} > "dracut_rebase_${v}_changes_complete${s}_$(date -I).diff"
+  : "Diff from upstream changes"
+  gitds -p ${v}
+  gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
+
+
+  : "Complete diff"
+  gitds -p ${p}
+  gitds -p ${p} > "dracut_rebase_${v}_changes_complete${s}_$(date -I).diff"
 
 
 # WORK IN PROGRESS
@@ -269,25 +269,23 @@ gist -spf dracut_rebase_107_changes_upstream_2025-07-02.diff{,}
 
 
 MSG="
-Rebase from downstream commit a4e87db1ba678f7f3b65cd65730132ca399cdf3e onto upstream tag 107 (279da16f1b8fcca27d41937967c4e8f4c295086a).
+Rebase from downstream commit <> onto upstream tag <> (<>).
 
 Test builds:
- - Koji Rawhide: TBD
- - Koji F42: TBD
- - COPR: https://copr.fedorainfracloud.org/coprs/build/9233168
+ - Koji Rawhide: <>
+ - COPR: <>
 
 Smoke tests:
- - Rawhide aarch64: https://gist.github.com/pvalena/9151b9ae01288759a9b5d1bb989b99c7
- - Rawhide x86_64 (no reboot): https://gist.github.com/pvalena/8f7b7d2ae219eaec9d68922eaf6d4372
- - F42 aarch64: https://gist.github.com/pvalena/284a0cf9da6dcc2d0e40d239660d1e99
- - F41 x86_64: https://gist.github.com/pvalena/e0016f383a00e032b0728ddd34b0239e
+ - Rawhide aarch64: <>
+ - Rawhide x86_64: <>
+ - Rawhide mock: <>
+ - Rawhide container: <>
 
 Diff:
- - Downstream-modified changes only: https://gist.github.com/pvalena/d1af4a74194e77417d496b6abe294ae9
- - Changes from upstream: https://gist.github.com/pvalena/06fc42934b1f345e8a53b18075cc7eee
- - Complete diff: https://gist.github.com/pvalena/12de812cc0ae7829c9d5479f2b44359e
+ - Downstream-modified changes only: <>
+ - Changes from upstream: <>
+ - Complete diff: <>
 "
-
 
 gh pr create -f -a '@me' -R "redhat-plumbers/dracut-fedora"
 
