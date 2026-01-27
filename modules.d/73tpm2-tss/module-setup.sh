@@ -31,6 +31,8 @@ installkernel() {
 # Install the required file(s) and directories for the module in the initramfs.
 install() {
     inst_sysusers tpm2-tss.conf
+    grep -s '^tss:' "${dracutsysrootdir-}"/etc/passwd >> "$initdir/etc/passwd"
+    grep -s '^tss:' "${dracutsysrootdir-}"/etc/group >> "$initdir/etc/group"
 
     inst_multiple -o \
         "$tmpfilesdir"/tpm2-tss-fapi.conf \
