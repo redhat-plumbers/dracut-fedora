@@ -307,7 +307,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/16dbus-daemon
 %{dracutlibdir}/modules.d/16rngd
 %{dracutlibdir}/modules.d/19dbus
-%{dracutlibdir}/modules.d/20i18n
+%{dracutlibdir}/modules.d/46i18n
 %{dracutlibdir}/modules.d/30convertfs
 %{dracutlibdir}/modules.d/45drm
 %{dracutlibdir}/modules.d/45simpledrm
