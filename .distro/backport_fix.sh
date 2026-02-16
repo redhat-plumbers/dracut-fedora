@@ -165,16 +165,6 @@ or="${1:-upstream-ng}"
 cis="$(gitl1 "${rf}" "-${cc}" --reverse | cut -d' ' -f1)"
 [[ -n "${cis}" ]]
 
-com="\nCherry-picked commits:\n${cis}\n"
-
-[[ -z "$FED" ]] && {
-  com="${com}\nResolves: RHEL-${bn}\n"
-}
-
-echo -e "${com}"
-
-read '?-->continue?'
-
 i=0
 echo "${cis}" \
 | while read ci; do
@@ -186,39 +176,53 @@ echo "${cis}" \
 
     gityx "${ci}" || {
 
-      mod="$(gits | grep '^\s*both modified: ')" ||:
+        mod="$(gits | grep '^\s*both modified: ')" ||:
 
-      [[ -z "$mod" ]] || {
+        [[ -n "$mod" ]] && {
 
-        mod="$(echo "$mod" | tr -s ' ' | cut -d' ' -f3)"
+            mod="$(echo "$mod" | tr -s ' ' | cut -d' ' -f3)"
 
-        ls -d $mod
+            ls -d $mod
 
-        $EDITOR $mod
+            $EDITOR $mod
 
-        gita $mod
+            gita $mod
 
-        gitdh
+            gitdh
 
-        gits
+            gits
 
-        exit 2
-      }
+            exit 2
+        }
 
-      gits | grep -q '^nothing to commit' \
+        gits | grep -q '^nothing to commit' \
         && {
-          gits | grep 'git cherry-pick --skip'
+            gits | grep 'git cherry-pick --skip'
 
-          gity --skip
-          :
+            gity --skip
+
+            continue
+            :
+
         } || {
+            : "not sure what's happening"
 
-          gits
+            gits
 
-          exit 3
+            exit 3
         }
     }
-  done
+
+    : 'commited'
+
+    [[ -z "$FED" ]] && {
+
+        nl=$'\n'
+        gitamah "${nl}Resolves: RHEL-${bn}"
+
+        gith
+    }
+done
 
 read '?-->continue?'
 
