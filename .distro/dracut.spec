@@ -319,6 +319,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/68lvmthinpool-monitor
 %{dracutlibdir}/modules.d/70btrfs
 %{dracutlibdir}/modules.d/70crypt
+%{dracutlibdir}/modules.d/70devicetree-fw
 %{dracutlibdir}/modules.d/70dm
 %{dracutlibdir}/modules.d/70dmraid
 %{dracutlibdir}/modules.d/70kernel-modules
