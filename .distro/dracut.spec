@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 108
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -454,6 +454,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Thu Mar 12 2026 Pavel Valena <pvalena@redhat.com> - 108-6
+- fix(dracut): use grep -q/-s to silence output/error
+
 * Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 108-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
