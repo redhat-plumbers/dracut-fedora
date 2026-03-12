@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 108
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -454,6 +454,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 108-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Tue Oct 07 2025 Pavel Valena <pvalena@redhat.com> - 108-3
 - fix: partial revert for hostonly sloppy mode
 
