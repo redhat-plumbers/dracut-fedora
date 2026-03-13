@@ -339,6 +339,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/70overlayfs
 %{dracutlibdir}/modules.d/70pcmcia
 %{dracutlibdir}/modules.d/70ppcmac
+%{dracutlibdir}/modules.d/70qcom-adsp
 %{dracutlibdir}/modules.d/70qemu
 %{dracutlibdir}/modules.d/71overlayfs-crypt
 %{dracutlibdir}/modules.d/71systemd-cryptsetup
