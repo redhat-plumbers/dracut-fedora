@@ -334,6 +334,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/70ppcmac
 %{dracutlibdir}/modules.d/70pcmcia
 %{dracutlibdir}/modules.d/70qemu
+%{dracutlibdir}/modules.d/70qcom-adsp
 %{dracutlibdir}/modules.d/73crypt-gpg
 %{dracutlibdir}/modules.d/73crypt-loop
 %{dracutlibdir}/modules.d/73fido2
