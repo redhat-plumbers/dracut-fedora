@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 108
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -319,6 +319,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/68lvmthinpool-monitor
 %{dracutlibdir}/modules.d/70btrfs
 %{dracutlibdir}/modules.d/70crypt
+%{dracutlibdir}/modules.d/70devicetree-fw
 %{dracutlibdir}/modules.d/70dm
 %{dracutlibdir}/modules.d/70dmraid
 %{dracutlibdir}/modules.d/70kernel-modules
@@ -332,6 +333,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/70ppcmac
 %{dracutlibdir}/modules.d/70pcmcia
 %{dracutlibdir}/modules.d/70qemu
+%{dracutlibdir}/modules.d/70qcom-adsp
 %{dracutlibdir}/modules.d/73crypt-gpg
 %{dracutlibdir}/modules.d/73crypt-loop
 %{dracutlibdir}/modules.d/73fido2
@@ -454,6 +456,10 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Sat Mar 14 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 108-7
+- feat(dracut): add module to add fw files from DT firmware-name properties
+- feat(dracut): add module to load Qualcomm ADSP module pre-udev
+
 * Thu Mar 12 2026 Pavel Valena <pvalena@redhat.com> - 108-6
 - fix(dracut): use grep -q/-s to silence output/error
 
