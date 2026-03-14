@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 109
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -457,6 +457,10 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Sat Mar 14 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 109-2
+- feat(dracut): add module to add fw files from DT firmware-name properties
+- feat(dracut): add module to load Qualcomm ADSP module pre-udev
+
 * Thu Jan 22 2026 Pavel Valena <pvalena@redhat.com> - 109-1
 - Rebase to dracut-109
 
