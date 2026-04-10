@@ -77,47 +77,47 @@ zsh -n "$0"
 ## Args
 : 'Branch = -b'
 [[ "$1" == "-b" ]] && {
-  b="${2}"
-  shift 2 ||:
+    b="${2}"
+    shift 2 ||:
 
-  [[ -z "$b" ]] && {
+    [[ -z "$b" ]] && {
     b="$(gitb | grep '^* ' | cut -d' ' -f2-)"
-  }
-  :
+    }
+    :
 } || b='main'
 
 : 'Continue = -c'
 [[ "$1" == "-c" ]] && {
-  c="${2}"
-  shift 2 ||:
+    c="${2}"
+    shift 2 ||:
 
-  [[ -n "$c" ]]
-  [[ ${c} -ge 0 ]]
-  [[ ${c} -lt 1000 ]]
-  :
+    [[ -n "$c" ]]
+    [[ ${c} -ge 0 ]]
+    [[ ${c} -lt 1000 ]]
+    :
 } || c=0
 
 : 'Dry mode = -d'
 [[ "$1" == "-d" ]] && {
-  d=dry
-  shift ||:
-  :
+    d=dry
+    shift ||:
+    :
 } || d=
 
 : "Previous version = -p"
 [[ "$1" == "-p" ]] && {
-  pv="$2"
-  shift 2 ||:
-  :
+    pv="$2"
+    shift 2 ||:
+    :
 } || pv=
 
 
 : 'Quiet mode = -q'
 [[ "$1" == "-q" ]] && {
-  q=quiet
-  set +x
-  shift ||:
-  :
+    q=quiet
+    set +x
+    shift ||:
+    :
 } || q=
 
 
@@ -130,7 +130,7 @@ shift
 [[ ${v} -lt 1000 ]]
 
 {
-  echo -e "\n>>> #${c}\n"
+    echo -e "\n>>> #${c}\n"
 
 } 2>/dev/null
 
@@ -143,221 +143,259 @@ shift
 
 p="${v}-pre-rebase${s}"
 
+I=1
+((I+=0));
 
 ## First part
-[[ $c -lt 1 ]] && {
+[[ ${I} -ge ${c} ]] && {
 
-  # TODO: ./rebase.sh -b rhel-10 -p 103 105
+    # TODO: ./rebase.sh -b rhel-10 -p 103 105
 
-  : 'Checkout main'
-  [[ -n "$b" ]]
-  gitc "$b"
-  gitp
-  gits | grep "^Your branch is up to date with"
+    : 'Checkout main'
+    [[ -n "$b" ]]
+    gitc "$b"
+    gitp
+    gits | grep "^Your branch is up to date with"
 
-  : "Switch to pre-release branch: $p"
-  dry gitcb "$p"
-  dry gituu origin "$p"
+    : "Switch to pre-release branch: $p"
+    dry gitcb "$p"
+    dry gituu origin "$p"
 
-  r="rebase-${v}${s}"
-  : "Switch to rebase branch: $r"
-  dry gitcb "$r"
-  dry gituu origin "$r"
-  gits | grep "^Your branch is up to date with"
+    r="rebase-${v}${s}"
+    : "Switch to rebase branch: $r"
+    dry gitcb "$r"
+    dry gituu origin "$r"
+    gits | grep "^Your branch is up to date with"
 
-  : 'Check upstream tag'
-  gitf upstream-ng
-  gith "${v}" | head -n 1 | grep ^tag
+    : 'Check upstream tag'
+    gitf upstream-ng
+    gith "${v}" | head -n 1 | grep ^tag
 
-  : 'Rebase'
-  dry gite "${v}"
+    : 'Rebase'
+    dry gite "${v}"
+    # Here it usually fails
 
-  : 'Verify commits'
-  gitlp ||:
-
-  ext
+    ext
 }
-{ echo; } 2>/dev/null
+{ echo; ((I++)); } 2>/dev/null
 
+### Manual: fix conflicts
 
-## Second part
-[[ $c -lt 2 ]] && {
-  : 'Continue #1'
 
-  : 'Get previous version'
-  [[ -n "$pv" ]] || pv="$(( ${v} - 1 ))"
+## TODO: Second part
+[[ ${I} -ge ${c} ]] && {
+    : "Continue #${I}"
+    gituf
 
-  [[ -n "$pv" ]]
-  [[ ${pv} -gt 0 ]]
-  [[ ${pv} -lt $v ]]
 
 
-  : 'List files changed downstream'
-  F="$( (gitds ${p} ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
-
-
-  : "Diff downstream changes"
-  gitds -p ${p} -- `echo $F`
-  gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -I).diff"
-
-
-  : "Diff from upstream changes"
-  gitds -p ${v}
-  gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
-
-
-  : "Complete diff"
-  gitds -p ${p}
-  gitds -p ${p} > "dracut_rebase_${v}_changes_complete${s}_$(date -I).diff"
-
-
-# WORK IN PROGRESS
-wip
-
-ls -d dracut_rebase_108_changes_*| xargs -ri zsh -c "echo -n '{}: '; gist -spf {}{,}"
-
-
-# Next part
-
-## Todo: version bumps (probably a second step)
-rpmdev-bumpspec -D -c 'build: upgrade to dracut 107' -u 'Pavel Valena <pvalena@redhat.com>' .distro/*.spec
-
-nn .distro/dracut.spec
-
-
-
-gitl1 107-pre-rebase -1
-
-gitl1 107 -1
-
-
-nn .packit.yml
-
-cp -vi .packit.yml .distro/source-git.yaml
-
-nn .distro/source-git.yaml
-
-gita .packit.yml .distro/source-git.yaml
-
-
-gita .distro/dracut.spec
-
-
-## Todo: source-git commit
-gitim 'build: upgrade to dracut 107'
-
-gith
-
-## SRPM -- once
-nn .distro/*.spec
-n=1; rm .distro/*.patch; rm *.src.rpm; packit srpm --no-update-release --release-suffix ${n}
-nn .distro/*.patch
-
-
-# Next step
-## SRPM -- again?
-## TODO: builds
-
-### Report (if all succeeds?)
-gitd 107-pre-rebase | gist -spf dracut_rebase_107_changes_complete_$(date -I).diff
-
-
-### Next step
-
-gist -spf dracut_rebase_107_changes_downstream_2025-07-02.diff{,}
-gist -spf dracut_rebase_107_changes_upstream_2025-07-02.diff{,}
-
-
-MSG="
-Rebase from downstream commit <> onto upstream tag <> (<>).
-
-Test builds:
- - Koji Rawhide: <>
- - COPR: <>
-
-Smoke tests:
- - Rawhide aarch64: <>
- - Rawhide x86_64: <>
- - Rawhide mock: <>
- - Rawhide container: <>
-
-Diff:
- - Downstream-modified changes only: <>
- - Changes from upstream: <>
- - Complete diff: <>
-"
-
-gh pr create -f -a '@me' -R "redhat-plumbers/dracut-fedora"
-
-
-: 'Upgrade files version'
-
-
-: 'Bump spec version'
-
-
-: 'Review'
-
-
-: 'Create SRPM'
-packit srpm --no-update-release --release-suffix 1
-
-
-: 'Cleanup'
-
-
-: 'Mock build'
-mck *.src.rpm
-
-
-: 'Mock install'
-mck i result/*.(noarch|x86_64).rpm
-
-
-: 'COPR scratch-build'
-~/lpcsf-new/test/scripts/pkgs/cr-build.sh -s dracut
-
-
-: 'Koji scratch-build'
-~/lpcsf-new/test/scripts/pkgs/kj-build.sh -s rawhide
-
-
-: 'Test'
-pushd ../fedora
-vagrant halt
-vagrant status
-vagrant up
-sleep 3
-vagrant status
-vagrant provision
-vagrant halt||:
-vagrant halt
-sleep 3
-vagrant up
-vagrant ssh -c 'rpm -q dracut; uname -r; ls -lahd /boot/*init*'
-popd
-
-exit 3
-}
-
-
-### WIP ###
+    ### WORK IN PROGRESS ###
     wip
 
 
-# Third part
-[[ $c -lt 3 ]] && {
-: 'Continue #2'
 
-: 'Push'
-gits
-gitu
+    ## Todo: version bumps (probably a second step)
+    rpmdev-bumpspec -D -c 'build: upgrade to dracut 107' -u 'Pavel Valena <pvalena@redhat.com>' .distro/*.spec
+
+    nn .distro/dracut.spec
 
 
-: 'Pull request'
-gh pr create -d -f -l bug -a '@me' -R redhat-plumbers/dracut-fedora
 
-exit 4
+    gitl1 107-pre-rebase -1
+
+    gitl1 107 -1
+
+
+    nn .packit.yml .distro/source-git.yaml
+
+    #cp -vi .packit.yml .distro/source-git.yaml
+
+    dff .packit.yml .distro/source-git.yaml
+
+    gita .packit.yml .distro/source-git.yaml
+
+
+    gita .distro/dracut.spec
+
+
+    ## Todo: source-git commit
+    gitim 'build: upgrade to dracut 107'
+
+    gith
+
+
+    ext
+}
+{ echo; ((I++)); } 2>/dev/null
+
+
+### Manual: additional spec changes
+
+
+## TODO: Third part
+[[ $I -ge $c ]] && {
+    : "Continue #${I}"
+    gituf
+
+    : 'Inspect commits'
+    gitl ||:
+
+
+    : 'Get previous version'
+    [[ -n "$pv" ]] || pv="$(( ${v} - 1 ))"
+
+    [[ -n "$pv" ]]
+    [[ ${pv} -gt 0 ]]
+    [[ ${pv} -lt $v ]]
+
+
+    : 'List files changed downstream'
+    F="$( (gitds ${p} ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
+
+
+    : "Diff downstream changes"
+    #  gitds -p ${p} -- `echo $F`
+    gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -I).diff"
+
+
+    : "Diff from upstream changes"
+    #  gitds -p ${v}
+    gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
+
+
+    : "Complete diff"
+    #  gitds -p ${p}
+    gitds -p ${p} > "dracut_rebase_${v}_changes_complete${s}_$(date -I).diff"
+
+
+    for f in "dracut_rebase_${v}_changes_"*"${s}_$(date -I).diff"; do
+
+        lss "$f" ||:
+        #colordiff < dracut_rebase_111_changes_complete_2026-07-31.diff|lss
+
+    done
+
+
+
+
+    ### WORK IN PROGRESS ###
+    wip
+
+    ls -d dracut_rebase_108_changes_*| xargs -ri zsh -c "echo -n '{}: '; gist -spf {}{,}"
+
+
+    # Next part
+
+    ## SRPM -- once
+    nn .distro/*.spec
+    n=1; rm .distro/*.patch; rm *.src.rpm; packit srpm --no-update-release --release-suffix ${n}
+    nn .distro/*.patch
+
+
+    # Next step
+    ## SRPM -- again?
+    ## TODO: builds
+
+    ### Report (if all succeeds?)
+    gitd 107-pre-rebase | gist -spf dracut_rebase_107_changes_complete_$(date -I).diff
+
+
+    ### Next step
+
+    gist -spf dracut_rebase_107_changes_downstream_2025-07-02.diff{,}
+    gist -spf dracut_rebase_107_changes_upstream_2025-07-02.diff{,}
+
+
+    MSG="
+    Rebase from downstream commit <> onto upstream tag <> (<>).
+
+    Test builds:
+     - Koji Rawhide: <>
+     - COPR: <>
+
+    Smoke tests:
+     - Rawhide aarch64: <>
+     - Rawhide x86_64: <>
+     - Rawhide mock: <>
+     - Rawhide container: <>
+
+    Diff:
+     - Downstream-modified changes only: <>
+     - Changes from upstream: <>
+     - Complete diff: <>
+    "
+
+    gh pr create -f -a '@me' -R "redhat-plumbers/dracut-fedora"
+
+
+    : 'Upgrade files version'
+
+
+    : 'Bump spec version'
+
+
+    : 'Review'
+
+
+    : 'Create SRPM'
+    packit srpm --no-update-release --release-suffix 1
+
+
+    : 'Cleanup'
+
+
+    : 'Mock build'
+    mck *.src.rpm
+
+
+    : 'Mock install'
+    mck i result/*.(noarch|x86_64).rpm
+
+
+    : 'COPR scratch-build'
+    ~/lpcsf-new/test/scripts/pkgs/cr-build.sh -s dracut
+
+
+    : 'Koji scratch-build'
+    ~/lpcsf-new/test/scripts/pkgs/kj-build.sh -s rawhide
+
+
+    : 'Test'
+    pushd ../fedora
+    vagrant halt
+    vagrant status
+    vagrant up
+    sleep 3
+    vagrant status
+    vagrant provision
+    vagrant halt||:
+    vagrant halt
+    sleep 3
+    vagrant up
+    vagrant ssh -c 'rpm -q dracut; uname -r; ls -lahd /boot/*init*'
+    popd
+
+    exit 3
+    }
+
+
+    ### WIP ###
+        wip
+
+
+    # Third part
+    [[ $c -lt 3 ]] && {
+    : 'Continue #2'
+
+    : 'Push'
+    gits
+    gitu
+
+
+    : 'Pull request'
+    gh pr create -d -f -l bug -a '@me' -R redhat-plumbers/dracut-fedora
+
+    exit 4
 }
 
 [[ $c -lt 4 ]] && {
