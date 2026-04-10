@@ -171,53 +171,26 @@ p="${v}-pre-rebase${s}"
 
   : 'Rebase'
   dry gite "${v}"
-
-  : 'Verify commits'
-  gitlp ||:
+  # Here it usually fails
 
   ext
 }
 { echo; } 2>/dev/null
 
+### Manual: fix conflicts
+
 
 ## Second part
 [[ $c -lt 2 ]] && {
   : 'Continue #1'
+  gituf
 
-  : 'Get previous version'
-  [[ -n "$pv" ]] || pv="$(( ${v} - 1 ))"
-
-  [[ -n "$pv" ]]
-  [[ ${pv} -gt 0 ]]
-  [[ ${pv} -lt $v ]]
-
-
-  : 'List files changed downstream'
-  F="$( (gitds ${p} ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
-
-
-  : "Diff downstream changes"
-  gitds -p ${p} -- `echo $F`
-  gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -I).diff"
-
-
-  : "Diff from upstream changes"
-  gitds -p ${v}
-  gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
-
-
-  : "Complete diff"
-  gitds -p ${p}
-  gitds -p ${p} > "dracut_rebase_${v}_changes_complete${s}_$(date -I).diff"
+  : 'Verify commits'
+  gitlp ||:
 
 
 # WORK IN PROGRESS
-wip
-
-ls -d dracut_rebase_108_changes_*| xargs -ri zsh -c "echo -n '{}: '; gist -spf {}{,}"
-
-
-# Next part
+  wip
 
 ## Todo: version bumps (probably a second step)
 rpmdev-bumpspec -D -c 'build: upgrade to dracut 107' -u 'Pavel Valena <pvalena@redhat.com>' .distro/*.spec
@@ -247,6 +220,57 @@ gita .distro/dracut.spec
 gitim 'build: upgrade to dracut 107'
 
 gith
+
+
+  ext
+}
+{ echo; } 2>/dev/null
+
+
+### Manual: additional spec changes
+
+
+## Third part
+[[ $c -lt 3 ]] && {
+  : 'Continue #2'
+  gituf
+
+  : 'Get previous version'
+  [[ -n "$pv" ]] || pv="$(( ${v} - 1 ))"
+
+  [[ -n "$pv" ]]
+  [[ ${pv} -gt 0 ]]
+  [[ ${pv} -lt $v ]]
+
+
+  : 'List files changed downstream'
+  F="$( (gitds ${p} ${pv} | head -n -1; gitds ${v} | head -n -1) | tr -s ' ' | cut -d' ' -f2 | sort -u | xargs echo)"
+
+
+  : "Diff downstream changes"
+#  gitds -p ${p} -- `echo $F`
+  gitds -p ${p} -- `echo $F` > "dracut_rebase_${v}_changes_downstream${s}_$(date -I).diff"
+
+
+  : "Diff from upstream changes"
+#  gitds -p ${v}
+  gitds -p ${v} > "dracut_rebase_${v}_changes_upstream${s}_$(date -I).diff"
+
+
+  : "Complete diff"
+#  gitds -p ${p}
+  gitds -p ${p} > "dracut_rebase_${v}_changes_complete${s}_$(date -I).diff"
+
+
+  lss "dracut_rebase_${v}_changes_"*"${s}_$(date -I).diff"
+
+# WORK IN PROGRESS
+wip
+
+ls -d dracut_rebase_108_changes_*| xargs -ri zsh -c "echo -n '{}: '; gist -spf {}{,}"
+
+
+# Next part
 
 ## SRPM -- once
 nn .distro/*.spec
