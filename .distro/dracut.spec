@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 109
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -455,6 +455,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Mon Jun 01 2026 Pavel Valena <pvalena@redhat.com> - 109-3
+- feat(systemd-sysext): include systemd-{sys,conf}ext-sysroot services
+
 * Wed May 27 2026 Pavel Valena <pvalena@redhat.com> - 109-2
 - build: fix for rhbz#2481748
 
