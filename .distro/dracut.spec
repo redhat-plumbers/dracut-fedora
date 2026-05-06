@@ -469,6 +469,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %changelog
 * Thu Aug 13 2026 Pavel Valena <pvalena@redhat.com> - 111-2
 - fix(base): escape die() message in emergency hook script
+- fix(base): replace eval with safe variable indirection in splitsep and export_n
 
 * Mon aug 10 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 111-2
 - feat(dracut): add module to load Qualcomm ADSP module pre-udev
