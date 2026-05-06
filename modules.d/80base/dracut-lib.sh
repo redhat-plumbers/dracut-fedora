@@ -336,12 +336,18 @@ splitsep() {
 
     while [ -n "$str" ] && [ "$#" -gt 1 ]; do
         tmp="${str%%"$sep"*}"
-        eval "$1='${tmp}'"
+        local -n _splitsep_ref="$1"
+        _splitsep_ref="$tmp"
+        unset -n _splitsep_ref
         str="${str#"$tmp"}"
         str="${str#"$sep"}"
         shift
     done
-    [ -n "$str" ] && [ -n "$1" ] && eval "$1='$str'"
+    if [ -n "$str" -a -n "$1" ]; then
+        local -n _splitsep_ref="$1"
+        _splitsep_ref="$str"
+        unset -n _splitsep_ref
+    fi
     debug_on
     return 0
 }
@@ -940,14 +946,13 @@ emergency_shell() {
 }
 
 # Retain the values of these variables but ensure that they are unexported
-# This is a POSIX-compliant equivalent of bash's "export -n"
 export_n() {
     local var
     local val
     for var in "$@"; do
-        eval "val=\$$var"
+        val="${!var}"
         unset "$var"
-        [ -n "$val" ] && eval "$var=\"$val\""
+        [ -n "$val" ] && printf -v "$var" '%s' "$val"
     done
 }
 
