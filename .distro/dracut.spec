@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 109
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -455,6 +455,13 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Wed Jun 10 2026 Pavel Valena <pvalena@redhat.com> - 109-4
+- fix(base): escape arguments in initqueue hook script generation
+- fix(net-lib): warn on suspicious shell metacharacters in hostname file
+- fix(systemd-networkd): escape DHCP lease values in dhcpopts generation
+- fix(network-legacy): remove network-legacy completely from the codebase
+- fix(iscsi): replace `echo` writes with `printf` to prevent variable injection
+
 * Mon Jun 01 2026 Pavel Valena <pvalena@redhat.com> - 109-3
 - feat(systemd-sysext): include systemd-{sys,conf}ext-sysroot services
 
