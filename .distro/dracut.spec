@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 109
-Release: 5%{?dist}
+Release: 7%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -455,6 +455,12 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Wed Jul 15 2026 Fedora Release Engineering <releng@fedoraproject.org> - 109-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
+* Wed Jun 17 2026 Yaakov Selkowitz <yselkowi@redhat.com> - 109-6
+- Rebuilt for openssl 4.0
+
 * Wed Jun 17 2026 Pavel Valena <pvalena@redhat.com> - 109-5
 - fix(base): escape arguments in initqueue hook script generation
 - fix(net-lib): warn on suspicious shell metacharacters in hostname file
