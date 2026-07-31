@@ -7,8 +7,8 @@
 %global __requires_exclude pkg-config
 
 Name: dracut
-Version: 109
-Release: 7%{?dist}
+Version: 111
+Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -17,9 +17,9 @@ Summary: Initramfs generator using udev
 # except util/* which is GPLv2
 License: GPL-2.0-or-later AND LGPL-2.1-or-later AND GPL-2.0-only
 
-URL: https://github.com/dracut-ng/dracut-ng/wiki/
+URL: https://github.com/dracut-ng/dracut/wiki/
 
-Source0: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/%{version}.tar.gz
+Source0: https://github.com/dracut-ng/dracut/archive/refs/tags/%{version}.tar.gz
 
 Source1: https://www.gnu.org/licenses/lgpl-2.1.txt
 
@@ -159,24 +159,30 @@ This package provides a dracut module to build an initramfs, but store most file
 in a squashfs image, result in a smaller initramfs size and reduce runtime memory
 usage.
 
+
 %prep
-%autosetup -n %{name}-ng-%{version} -S git_am
+%autosetup -n %{name}-%{version} -S git_am
 cp %{SOURCE1} .
 
+
 %build
+# Makefile tries to remove of network-legacy (nonexistent) unless --enable-network-legacy
 %configure  --systemdsystemunitdir=%{_unitdir} \
             --bashcompletiondir=$(pkg-config --variable=completionsdir bash-completion) \
             --libdir=%{_prefix}/lib \
             --enable-dracut-cpio \
+            --enable-network-legacy \
 %if %{without doc}
             --disable-documentation \
 %endif
             ${NULL}
 
-%make_build
+
+%make_build DRACUT_FULL_VERSION="%{version}-%{release}"
+
 
 %install
-%make_install %{?_smp_mflags} \
+%make_install DRACUT_FULL_VERSION="%{version}-%{release}" %{?_smp_mflags} \
      libdir=%{_prefix}/lib
 
 echo "DRACUT_VERSION=%{version}-%{release}" > $RPM_BUILD_ROOT/%{dracutlibdir}/dracut-version.sh
@@ -186,9 +192,6 @@ rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/10dash
 
 # we do not support mksh in the initramfs
 rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/00mksh
-
-# Remove obsolete module
-rm -fr -- $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/35network-legacy
 
 %ifnarch s390 s390x
 # remove architecture specific modules
@@ -236,7 +239,6 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %dir %{dracutlibdir}
 %dir %{dracutlibdir}/modules.d
 %{dracutlibdir}/dracut-functions.sh
-%{dracutlibdir}/dracut-init.sh
 %{dracutlibdir}/dracut-functions
 %{dracutlibdir}/dracut-version.sh
 %{dracutlibdir}/dracut-logger.sh
@@ -271,6 +273,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %ifnarch s390 s390x
 %{dracutlibdir}/modules.d/10warpclock
 %endif
+
+%{dracutlibdir}/modules.d/11systemd-pcrextend
+%{dracutlibdir}/modules.d/11systemd-sysusers-service
 %{dracutlibdir}/modules.d/11fips
 %{dracutlibdir}/modules.d/11fips-crypto-policies
 %{dracutlibdir}/modules.d/11systemd-ac-power
@@ -279,14 +284,12 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/11systemd-battery-check
 %{dracutlibdir}/modules.d/11systemd-coredump
 %{dracutlibdir}/modules.d/11systemd-creds
-%{dracutlibdir}/modules.d/11systemd-cryptsetup
 %{dracutlibdir}/modules.d/11systemd-hostnamed
 %{dracutlibdir}/modules.d/11systemd-initrd
 %{dracutlibdir}/modules.d/11systemd-integritysetup
 %{dracutlibdir}/modules.d/11systemd-journald
 %{dracutlibdir}/modules.d/11systemd-ldconfig
 %{dracutlibdir}/modules.d/11systemd-modules-load
-%{dracutlibdir}/modules.d/11systemd-pcrphase
 %{dracutlibdir}/modules.d/11systemd-portabled
 %{dracutlibdir}/modules.d/11systemd-pstore
 %{dracutlibdir}/modules.d/11systemd-repart
@@ -312,11 +315,15 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/45drm
 %{dracutlibdir}/modules.d/45simpledrm
 %{dracutlibdir}/modules.d/45net-lib
+%{dracutlibdir}/modules.d/45systemd-import
 %{dracutlibdir}/modules.d/45plymouth
 %{dracutlibdir}/modules.d/45url-lib
 %{dracutlibdir}/modules.d/70bluetooth
 %{dracutlibdir}/modules.d/68lvmmerge
 %{dracutlibdir}/modules.d/68lvmthinpool-monitor
+%{dracutlibdir}/modules.d/70crypt-lib
+%{dracutlibdir}/modules.d/70devicetree-firmware
+%{dracutlibdir}/modules.d/70memdisk
 %{dracutlibdir}/modules.d/70btrfs
 %{dracutlibdir}/modules.d/70crypt
 %{dracutlibdir}/modules.d/70dm
@@ -333,6 +340,8 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{dracutlibdir}/modules.d/70ppcmac
 %{dracutlibdir}/modules.d/70pcmcia
 %{dracutlibdir}/modules.d/70qemu
+%{dracutlibdir}/modules.d/71overlayfs-crypt
+%{dracutlibdir}/modules.d/71systemd-cryptsetup
 %{dracutlibdir}/modules.d/73crypt-gpg
 %{dracutlibdir}/modules.d/73crypt-loop
 %{dracutlibdir}/modules.d/73fido2
@@ -455,6 +464,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Fri Jul 31 2026 Pavel Valena <pvalena@redhat.com> - 111-1
+- build: upgrade to dracut 111
+
 * Wed Jul 15 2026 Fedora Release Engineering <releng@fedoraproject.org> - 109-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 

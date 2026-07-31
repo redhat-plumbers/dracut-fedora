@@ -1,7 +1,7 @@
 
 # Docs: https://packit.dev/docs/
 
-upstream_project_url: git@github.com:dracut-ng/dracut-ng.git
+upstream_project_url: git@github.com:dracut-ng/dracut.git
 
 ## TODO: #####################
 # unify - the only difference
@@ -27,8 +27,8 @@ files_to_sync:
 ##############################
 
 sources:
-- path: dracut-ng-109.tar.gz
-  url: https://github.com/dracut-ng/dracut-ng/archive/refs/tags/109.tar.gz
+- path: dracut-111.tar.gz
+  url: https://github.com/dracut-ng/dracut/archive/refs/tags/111.tar.gz
 
 specfile_path: .distro/dracut.spec
 
@@ -42,8 +42,8 @@ patch_generation_patch_id_digits: 1
 sync_changelog: true
 
 # TODO: #
-#upstream_ref: "109"
-upstream_ref: 13c5e5feee9ba86b960d351f87aa0eb25f242ff0
+#upstream_ref: "111"
+upstream_ref: b3b4f7ef914b84964a56500cfec83f21dc513e6a
 
 upstream_package_name: dracut
 downstream_package_name: dracut
