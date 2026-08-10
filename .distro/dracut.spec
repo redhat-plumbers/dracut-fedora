@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 111
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -467,6 +467,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Mon aug 10 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 111-2
+- feat(dracut): add module to load Qualcomm ADSP module pre-udev
+
 * Fri Jul 31 2026 Pavel Valena <pvalena@redhat.com> - 111-1
 - build: upgrade to dracut 111
 
