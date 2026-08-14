@@ -316,10 +316,6 @@ network:
     - changed-files:
           - any-glob-to-any-file: 'modules.d/[0-9][0-9]network/*'
 
-network-legacy:
-    - changed-files:
-          - any-glob-to-any-file: 'modules.d/[0-9][0-9]network-legacy/*'
-
 network-manager:
     - changed-files:
           - any-glob-to-any-file: 'modules.d/[0-9][0-9]network-manager/*'
@@ -339,6 +335,10 @@ nvdimm:
 nvmf:
     - changed-files:
           - any-glob-to-any-file: 'modules.d/[0-9][0-9]nvmf/*'
+
+openssl:
+    - changed-files:
+          - any-glob-to-any-file: 'modules.d/[0-9][0-9]openssl/*'
 
 overlayfs:
     - changed-files:
