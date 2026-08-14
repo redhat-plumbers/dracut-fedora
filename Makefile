@@ -289,6 +289,7 @@ endif
 	mkdir -p $(DESTDIR)${pkgconfigdatadir}
 	install -m 0644 dracut.pc $(DESTDIR)${pkgconfigdatadir}/dracut.pc
 ifneq ($(enable_network_legacy),yes)
+	mkdir -p $(DESTDIR)$(pkglibdir)/modules.d/00network-legacy
 	rm -r $(DESTDIR)$(pkglibdir)/modules.d/[0-9][0-9]network-legacy
 endif
 	if ! [ -n "$(systemdsystemunitdir)" ]; then \
