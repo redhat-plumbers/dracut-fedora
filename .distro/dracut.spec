@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 111
-Release: 3%{?dist}
+Release: 2%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -467,7 +467,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
-* Tue Aug 18 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 111-3
+* Tue Aug 18 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 111-2
 - fix(devicetree-firmware): include soc specific firmwares in install_generic()
 - fix(devicetree-firmware): include Qualcomm X2 laptop model specific firmwares
 
