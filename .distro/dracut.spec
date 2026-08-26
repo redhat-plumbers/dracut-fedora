@@ -34,6 +34,8 @@ BuildRequires: gcc
 
 BuildRequires: pkgconfig
 BuildRequires: systemd
+# For dracut-install.c sd-json support
+BuildRequires: systemd-devel
 BuildRequires: bash-completion
 BuildRequires: cargo
 BuildRequires: openssl-devel
@@ -474,6 +476,7 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 * Thu Aug 13 2026 Pavel Valena <pvalena@redhat.com> - 111-2
 - fix(base): escape die() message in emergency hook script
 - fix(base): replace eval with safe variable indirection in splitsep and export_n
+- spec: json support for dracut-install (needed for detecting dlopen dependencies)
 
 * Mon aug 10 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 111-2
 - feat(dracut): add module to load Qualcomm ADSP module pre-udev
