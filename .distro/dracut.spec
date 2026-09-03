@@ -469,6 +469,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Fri Sep 11 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 111-3
+- fix(drm): add leds-qcom-lpg to aarch64 specific modules needed by drm
+
 * Fri Sep 04 2026 Pavel Valena <pvalena@redhat.com> - 111-3
 - fix(dracut-install): remove FTS_NOSTAT in install_modules() fts traversal
 
