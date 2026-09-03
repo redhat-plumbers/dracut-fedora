@@ -46,6 +46,15 @@ zsh -n "$0"
 
 } || LOC=
 
+: "OPT: no reset to master/main branch"
+[[ "$1" == "-n" ]] && {
+  {
+    shift ||:
+  } 2>/dev/null
+  NOR=y
+
+} || NOR=
+
 : "OPT: expect ref (commit-ish to get commits from) instead of PR #"
 [[ "$1" == "-r" ]] && {
   {
@@ -120,12 +129,13 @@ or="${1:-upstream-ng}"
 { echo ; } 2>/dev/null
 
 [[ -z "$FED" ]] && {
-  dist=rhel
-  remote="${dist}-${rv}"
-  :
+    dist=rhel
+    remote="${dist}-${rv}"
+    :
 } || {
-  dist=fedora
-  [[ -z "$rv" || "$rv" = main ]] && remote=main || remote="f${rv}"
+    dist=fedora
+    # TODO: autodetect remote
+    [[ -z "$rv" || "$rv" = main ]] && remote=main || remote="f${rv}"
 }
 
 [[ -z "$REF" ]] && rf="pr${pr}" || rf="${or}/${pr}"
@@ -134,33 +144,37 @@ or="${1:-upstream-ng}"
 { echo ; } 2>/dev/null
 
 [[ -z "$CON" ]] && {
-  br="${bn}"
+    br="${bn}"
 
-  [[ -z "$FED" ]] && br="fix-${br}" || br="backport-${br}"
-  [[ -n "${rv}" ]] && br="${remote}-fix-${br}"
+    [[ -z "$FED" ]] && {
+        br="fix-${br}"
+        :
+    } || {
+        br="backport-${br}"
+    }
+    [[ -n "${rv}" ]] && br="${remote}-${br}"
 
-  : "Create ${br}?"
-  read '?-->continue?'
+    : "Create ${br}?"
+    read '?-->continue?'
 
-  gitt
-  gitc "${remote}"
-  gitp
+    gitt
+    gitc "${remote}"
+    gitp
 
-  [[ -n "$DEL" ]] && gitbd "${br}" ||:
+    [[ -n "$DEL" ]] && gitbd "${br}" ||:
 
-  gitcb "${br}"
+    gitcb "${br}"
 
-  gitcb "${remote}-fix-${bn}"
+    [[ -z "$NOR" ]] && {
+        [[ -z "$FED" ]] && {
+            gitrh "${remote}/main"
+            :
+        } || {
+            gitrh "origin/$remote"
+        }
+    }
 
-  [[ -z "$FED" ]] && {
-    gitrh "${remote}/main"
-    :
-  } || {
-
-    gitrh "origin/$remote"
-  }
-
-  [[ -z "$REF" ]] && gitf "${or}" "refs/pull/${pr}/head:${rf}"
+    [[ -z "$REF" ]] && gitf "${or}" "refs/pull/${pr}/head:${rf}"
 }
 
 : "List Commits"
@@ -251,12 +265,15 @@ gitlp ||:
 [[ -z "$LOC" ]] || exit 0
 
 [[ -z "$FED" ]] && {
-  gituu "${remote}"
-  gh pr create -f -a '@me' -R "redhat-plumbers/dracut-rhel${rv}"
-  :
-
+    gituu "${remote}"
+    gh pr create -f -a '@me' -R "redhat-plumbers/dracut-rhel${rv}"
+    :
 } || {
-  gituu
-  [[ -z "${rv}" ]] && gh pr create -f -a '@me' -R "redhat-plumbers/dracut-fedora"
+    gituu
+    [[ -z "${rv}" ]] || {
+        B="-B $remote"
+        :
+    } || B=
 
+    gh pr create -f -a '@me' -R "redhat-plumbers/dracut-fedora" $B
 }
