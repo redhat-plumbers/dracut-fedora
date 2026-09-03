@@ -125,7 +125,7 @@ or="${1:-upstream-ng}"
   :
 } || {
   dist=fedora
-  [[ -z "${rv}" ]] && remote=main || remote="f${rv}"
+  [[ -z "$rv" || "$rv" = main ]] && remote=main || remote="f${rv}"
 }
 
 [[ -z "$REF" ]] && rf="pr${pr}" || rf="${or}/${pr}"
@@ -149,6 +149,8 @@ or="${1:-upstream-ng}"
   [[ -n "$DEL" ]] && gitbd "${br}" ||:
 
   gitcb "${br}"
+
+  gitcb "${remote}-fix-${bn}"
 
   [[ -z "$FED" ]] && {
     gitrh "${remote}/main"
@@ -186,39 +188,53 @@ echo "${cis}" \
 
     gityx "${ci}" || {
 
-      mod="$(gits | grep '^\s*both modified: ')" ||:
+        mod="$(gits | grep '^\s*both modified: ')" ||:
 
-      [[ -z "$mod" ]] || {
+        [[ -n "$mod" ]] && {
 
-        mod="$(echo "$mod" | tr -s ' ' | cut -d' ' -f3)"
+            mod="$(echo "$mod" | tr -s ' ' | cut -d' ' -f3)"
 
-        ls -d $mod
+            ls -d $mod
 
-        $EDITOR $mod
+            $EDITOR $mod
 
-        gita $mod
+            gita $mod
 
-        gitdh
+            gitdh
 
-        gits
+            gits
 
-        exit 2
-      }
+            exit 2
+        }
 
-      gits | grep -q '^nothing to commit' \
+        gits | grep -q '^nothing to commit' \
         && {
-          gits | grep 'git cherry-pick --skip'
+            gits | grep 'git cherry-pick --skip'
 
-          gity --skip
-          :
+            gity --skip
+
+            continue
+            :
+
         } || {
+            : "not sure what's happening"
 
-          gits
+            gits
 
-          exit 3
+            exit 3
         }
     }
-  done
+
+    : 'commited'
+
+    [[ -z "$FED" ]] && {
+
+        nl=$'\n'
+        gitamah "${nl}Resolves: RHEL-${bn}"
+
+        gith
+    }
+done
 
 read '?-->continue?'
 
