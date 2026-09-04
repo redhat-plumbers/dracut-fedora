@@ -1,7 +1,7 @@
 name: Differential ShellCheck
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main, f44, f45, f46]
 
 jobs:
   test:
