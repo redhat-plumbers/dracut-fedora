@@ -5,12 +5,12 @@ on:  # yamllint disable-line rule:truthy
     schedule:
         - cron: '15 14 * * *'   # every day at 11:30 UTC
     push:
-        branches: [main]
+        branches: [f44]
         paths:
             - 'test/container/**'
             - '.github/workflows/container.yml'
     pull_request:
-        branches: [main]
+        branches: [f44]
         paths:
             - 'test/container/**'
             - '.github/workflows/container.yml'
