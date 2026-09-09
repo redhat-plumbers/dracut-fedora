@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 111
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -58,6 +58,8 @@ Requires: cpio
 Requires: filesystem >= 2.1.0
 Requires: findutils
 Requires: grep
+# Used to be required by systemd; needed for i18n
+Requires: kbd
 Requires: kmod
 Requires: sed
 # Used as default initramfs compression algorithm
@@ -469,6 +471,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Wed Sep 09 2026 Pavel Valena <pvalena@redhat.com> - 111-4
+- build: add Requires: kbd for i18n
+
 * Fri Sep 11 2026 Hans de Goede <johannes.goede@oss.qualcomm.com> - 111-3
 - fix(drm): add leds-qcom-lpg to aarch64 specific modules needed by drm
 
