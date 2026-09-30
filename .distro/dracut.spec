@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 111
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -471,6 +471,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Wed Sep 30 2026 Angel Cervera Roldan <angelcerveraroldan@protonmail.com> - 111-5
+- fix(crypt): do not call return to exit a systemd generator
+
 * Wed Sep 09 2026 Pavel Valena <pvalena@redhat.com> - 111-4
 - build: add Requires: kbd for i18n
 
